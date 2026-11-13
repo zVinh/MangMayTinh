@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NetShop | Prototype Internet Services</title>
+<style>
+:root{--navy:#142b4a;--muted:#667991;--line:#e4ebf4;--bg:#f4f7fb;--blue:#2868c7;--blue2:#eaf2ff;--green:#16855b;--greenbg:#e8f7f0;--orange:#e87923;--orangebg:#fff4e7;--red:#c74444;--redbg:#fff0f0;--purple:#6b59bc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,"DejaVu Sans",sans-serif;color:var(--navy)}
+.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:19px}.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#2c75d6,#41b99a);display:grid;place-items:center;color:white;font-size:20px}.topright{display:flex;align-items:center;gap:14px;color:#52657e;font-size:13px}.pill{border-radius:30px;padding:7px 12px;background:#fff4df;color:#9a5b12;border:1px solid #ffe0ad;font-weight:700}.user{width:34px;height:34px;border-radius:50%;background:#e8effb;display:grid;place-items:center;font-weight:700;color:#285b9d}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 72px)}.side{background:#fff;border-right:1px solid var(--line);padding:26px 16px}.sidehead{font-size:10px;color:#9aa8b8;font-weight:800;letter-spacing:1.2px;padding:0 12px 12px}.nav{display:flex;align-items:center;gap:11px;padding:12px;border-radius:10px;color:#60738b;font-size:14px;margin-bottom:5px}.nav.active{background:#eaf2ff;color:#225caa;font-weight:700}.navico{font-size:17px;width:22px;text-align:center}.side-note{margin:26px 8px 0;border:1px solid var(--line);background:#f8fbff;border-radius:12px;padding:12px;font-size:11px;color:#71829a;line-height:1.5}
+main{padding:27px 32px 38px;max-width:1320px;width:100%;margin:0 auto}.crumb{font-size:12px;color:#8796a9;margin-bottom:9px}.heading{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}.heading h1{font-size:25px;margin:0 0 6px;font-weight:800;letter-spacing:-.4px}.heading p{margin:0;color:#77879d;font-size:13px}.btn{border:0;border-radius:9px;padding:11px 16px;font-size:13px;font-weight:700;cursor:pointer}.btn.primary{background:#2868c7;color:white;box-shadow:0 4px 10px #2868c72b}.btn.outline{background:white;border:1px solid #d8e2ee;color:#35516e}.btn:active{transform:translateY(1px)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.kpi,.panel,.service{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 3px 12px #2b4b6c08}.kpi{padding:15px 17px}.kpi-top{display:flex;align-items:center;justify-content:space-between;color:#77879d;font-size:12px}.kpi-num{font-size:25px;font-weight:800;margin-top:7px}.kpi-foot{font-size:10px;color:#8494a8;margin-top:3px}.kpi-icon{width:32px;height:32px;border-radius:10px;background:#edf4ff;display:grid;place-items:center;font-size:16px}
+.grid{display:grid;grid-template-columns:1.12fr .88fr;gap:16px}.panel{padding:17px 18px;margin-bottom:16px}.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.panel-title{font-size:15px;font-weight:800}.small{font-size:11px;color:#8392a6}.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.service{padding:12px;box-shadow:none;min-height:102px}.service-top{display:flex;align-items:center;gap:8px;margin-bottom:7px}.service-logo{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:17px;font-weight:800}.service-name{font-size:12px;font-weight:800;line-height:1.25}.service-desc{font-size:10px;color:#7b8ba0;line-height:1.45}.status{font-size:9px;font-weight:700;padding:4px 7px;border-radius:20px;margin-top:8px;display:inline-block}.ok{color:#147a53;background:#e6f7ef}.sim{color:#996017;background:#fff3df}.waf .service-logo{background:#fff0df;color:#e67b20}.ts .service-logo{background:#e9f2ff;color:#2468bc}.gem .service-logo{background:#f0edff;color:#7060bf}.momo .service-logo{background:#fdeaf3;color:#c02573}.shop .service-logo{background:#fff0e7;color:#ea5a27}.fcm .service-logo{background:#fff2df;color:#d58b18}
+.order{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-size:10px;font-weight:700;color:#687c94;margin-bottom:6px}.field input,.field select{width:100%;border:1px solid #dce5ef;border-radius:8px;padding:10px 11px;background:#fbfdff;color:#28435e;font-size:12px;outline:none}.field input:focus,.field select:focus{border-color:#77a6e8;box-shadow:0 0 0 3px #eaf2ff}.scenario{display:flex;gap:8px;margin:11px 0 14px}.scenario button{flex:1;border:1px solid #dce5ef;background:#fff;color:#647891;border-radius:8px;padding:9px 8px;font-size:11px;font-weight:700;cursor:pointer}.scenario button.selected{border-color:#76a8eb;background:#edf5ff;color:#245ca8}.runbar{display:flex;gap:9px;align-items:center}.runbar .btn{flex:1}.runbar .btn.outline{flex:0 0 auto}
+.process{border:1px solid var(--line);background:#f9fbfe;border-radius:11px;padding:13px;margin-top:14px}.process-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.process-title{font-size:12px;font-weight:800}.risk{font-weight:800;font-size:11px;padding:5px 9px;border-radius:20px;background:#edf1f6;color:#718197}.risk.low{color:#14784f;background:#e6f7ef}.risk.high{color:#b63e3e;background:#ffebeb}.progress-meta{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#71839a;margin:10px 0 6px}.progress-track{height:7px;background:#e8eef6;border-radius:20px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#2868c7,#41b99a);border-radius:20px;transition:width .3s ease}.steps{display:grid;gap:7px;margin-top:11px}.step{display:flex;align-items:center;gap:9px;border:1px solid #e5ebf2;background:white;border-radius:8px;padding:9px;font-size:11px;color:#6f8197;transition:border-color .2s,background .2s}.step .dot{width:22px;height:22px;border-radius:7px;background:#eef3fa;display:grid;place-items:center;font-size:11px;flex-shrink:0}.step.done{border-color:#b8e5d1;background:#f4fcf8;color:#236b4d}.step.done .dot{background:#ddf4e8;color:#16855b}.step.active{border-color:#8bb7f0;background:#f0f6ff;color:#245ca8;box-shadow:0 0 0 2px #e4efff}.step.active .dot{background:#dceaff;color:#245ca8}.step.blocked{border-color:#f0c7c7;background:#fff7f7;color:#a34444}.step.blocked .dot{background:#ffe4e4;color:#bd4444}.step .detail{margin-left:auto;font-size:9px;color:#8a9aae;text-align:right}.step.active .detail{color:#245ca8;font-weight:700}.step.done .detail{color:#287b59}.step.blocked .detail{color:#b34444}.step-info{font-size:10px;color:#687c94;line-height:1.5;margin-top:10px;padding:9px 10px;background:#fff;border:1px dashed #d8e3f0;border-radius:8px;min-height:38px}.step-controls{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}.step-controls .btn{flex:1 1 145px}.btn.auto{background:#16855b;color:#fff;box-shadow:0 4px 10px #16855b24}.btn.auto:hover{background:#11764f}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.log{font-family:Consolas,monospace;font-size:10px;line-height:1.65;color:#536b86;background:#101e31;border-radius:9px;padding:11px 12px;min-height:128px;max-height:260px;overflow:auto}.log .green{color:#7be1b4}.log .orange{color:#ffd28a}.log .red{color:#ff9a9a}.notice{font-size:10px;color:#8392a6;line-height:1.5;margin-top:10px}.alert{border-radius:9px;padding:11px 12px;font-size:11px;margin-top:10px;line-height:1.45;display:none}.alert.show{display:block}.alert.good{color:#176b4b;background:#eaf8f1;border:1px solid #c8ebd8}.alert.warn{color:#9c3d3d;background:#fff0f0;border:1px solid #f0caca}
+.footer{font-size:10px;color:#9aa7b7;text-align:right;margin-top:4px}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.side{display:none}.grid{grid-template-columns:1fr}.service-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="brand"><div class="brand-mark">N</div><div>NetShop <span style="font-weight:400;color:#8192a6">| Internet Services</span></div></div><div class="topright"><span class="pill">PROTOTYPE • SANDBOX MÔ PHỎNG</span><span>Quản trị hệ thống</span><div class="user">AD</div></div></header>
+<div class="layout">
+<aside class="side"><div class="sidehead">WORKSPACE</div><div class="nav active"><span class="navico">▦</span>Tổng quan</div><div class="nav"><span class="navico">🛍</span>Đơn hàng</div><div class="nav"><span class="navico">🔐</span>Bảo mật</div><div class="nav"><span class="navico">🔌</span>Tích hợp API</div><div class="nav"><span class="navico">🔔</span>Thông báo</div><div class="side-note"><b>Phạm vi prototype</b><br>Minh họa luồng xử lý bằng dữ liệu mẫu. Chưa kết nối tài khoản/API thật của nhà cung cấp.</div></aside>
+<main>
+<div class="crumb">Trang chủ / Tổng quan / Kiểm thử tích hợp</div>
+<div class="heading"><div><h1>Trung tâm điều phối đơn hàng</h1><p>Theo dõi các dịch vụ Internet và mô phỏng quy trình đặt hàng tự động.</p></div><button class="btn outline" onclick="resetDemo()">↻ Đặt lại demo</button></div>
+<div class="kpis">
+ <div class="kpi"><div class="kpi-top">Dịch vụ tích hợp <span class="kpi-icon">🔌</span></div><div class="kpi-num">06</div><div class="kpi-foot">AI • Security • Payment • Shipping • Notification</div></div>
+ <div class="kpi"><div class="kpi-top">Đơn hàng mẫu <span class="kpi-icon">🧾</span></div><div class="kpi-num" id="kpiOrders">01</div><div class="kpi-foot">Dữ liệu phục vụ kiểm thử prototype</div></div>
+ <div class="kpi"><div class="kpi-top">Kiểm tra bảo mật <span class="kpi-icon">🛡️</span></div><div class="kpi-num" id="kpiSecurity">Chờ</div><div class="kpi-foot">Cloudflare WAF + Turnstile (mô phỏng)</div></div>
+ <div class="kpi"><div class="kpi-top">Trạng thái workflow <span class="kpi-icon">⚙️</span></div><div class="kpi-num" id="kpiStatus">Chưa chạy</div><div class="kpi-foot">Tự động hóa theo điểm Risk Score</div></div>
+</div>
+<div class="grid">
+ <section>
+  <div class="panel"><div class="panel-head"><div class="panel-title">Các Internet Services</div><span class="small">Backend điều phối qua API</span></div>
+   <div class="service-grid">
+    <div class="service waf"><div class="service-top"><div class="service-logo">☁</div><div class="service-name">Cloudflare WAF</div></div><div class="service-desc">Lọc request HTTP/HTTPS có dấu hiệu độc hại.</div><span class="status ok">● Sẵn sàng mô phỏng</span></div>
+    <div class="service ts"><div class="service-top"><div class="service-logo">✓</div><div class="service-name">Cloudflare Turnstile</div></div><div class="service-desc">Xác minh người dùng, hạn chế bot.</div><span class="status ok">● Sẵn sàng mô phỏng</span></div>
+    <div class="service gem"><div class="service-top"><div class="service-logo">✦</div><div class="service-name">Google Gemini API</div></div><div class="service-desc">Tư vấn sản phẩm, đề xuất mặt hàng.</div><span class="status sim">● Chưa gọi trong demo</span></div>
+    <div class="service momo"><div class="service-top"><div class="service-logo">m</div><div class="service-name">MoMo Payment API</div></div><div class="service-desc">Tạo và xác minh giao dịch thanh toán.</div><span class="status sim">● Sandbox mô phỏng</span></div>
+    <div class="service shop"><div class="service-top"><div class="service-logo">S</div><div class="service-name">Shopee Logistics API</div></div><div class="service-desc">Lấy tham số vận chuyển, sắp xếp giao hàng và tra cứu vận đơn Shopee.</div><span class="status sim">● Sandbox mô phỏng</span></div>
+    <div class="service fcm"><div class="service-top"><div class="service-logo">◆</div><div class="service-name">Firebase Cloud Messaging</div></div><div class="service-desc">Gửi thông báo trạng thái đơn hàng.</div><span class="status sim">● Sandbox mô phỏng</span></div>
+   </div>
+  </div>
+  <div class="panel"><div class="panel-head"><div class="panel-title">Nhật ký API / sự kiện</div><span class="small" id="logState">Chưa có sự kiện</span></div><div class="log" id="log"><span class="orange">[SYSTEM]</span> Prototype đã sẵn sàng.<br><span class="green">[INFO]</span> Chọn kịch bản và bấm “Chạy mô phỏng workflow”.<br><span class="orange">[NOTE]</span> Tất cả request/response đều là dữ liệu minh họa.</div></div>
+ </section>
+ <section>
+  <div class="panel"><div class="panel-head"><div class="panel-title">Đơn hàng kiểm thử</div><span class="small">ORDER DEMO</span></div>
+   <div class="order">
+    <div class="field"><label>Mã đơn hàng</label><input value="NS-2026-001" readonly></div>
+    <div class="field"><label>Khách hàng</label><input value="Nguyễn Minh An" readonly></div>
+    <div class="field"><label>Sản phẩm</label><input value="Tai nghe Bluetooth" readonly></div>
+    <div class="field"><label>Tổng tiền</label><input value="890.000 VND" readonly></div>
+   </div>
+   <div style="margin-top:15px;font-size:11px;font-weight:800;color:#687c94">CHỌN KỊCH BẢN KIỂM THỬ</div>
+   <div class="scenario"><button id="lowBtn" class="selected" onclick="setScenario('low')">✓ Đơn hợp lệ (LOW)</button><button id="highBtn" onclick="setScenario('high')">⚑ Đơn rủi ro cao (HIGH)</button></div>
+   <div class="step-controls"><button class="btn primary" id="nextStepBtn" onclick="nextStep()">▶ Xử lý bước 1/6</button><button class="btn auto" id="autoRunBtn" onclick="toggleAutoRun()">⏩ Chạy tự động</button><button class="btn outline" id="resetStepBtn" onclick="resetDemo()">↻ Bắt đầu lại</button></div>
+   <div class="process"><div class="process-head"><div class="process-title">Tiến trình xử lý từng bước</div><div class="risk" id="riskBadge">Chưa đánh giá</div></div>
+    <div class="progress-meta"><span id="progressLabel">Chưa bắt đầu</span><span id="progressCount">0/6 bước</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="steps" id="steps">
+     <div class="step"><div class="dot">1</div>WAF kiểm tra request <span class="detail">Chờ xử lý</span></div>
+     <div class="step"><div class="dot">2</div>Turnstile xác minh token <span class="detail">Chờ xử lý</span></div>
+     <div class="step"><div class="dot">3</div>Backend tính Risk Score <span class="detail">Chờ xử lý</span></div>
+     <div class="step"><div class="dot">4</div>MoMo Payment API <span class="detail">Chờ quyết định</span></div>
+     <div class="step"><div class="dot">5</div>Shopee Logistics API <span class="detail">Chờ quyết định</span></div>
+     <div class="step"><div class="dot">6</div>Firebase Cloud Messaging <span class="detail">Chờ quyết định</span></div>
+    </div>
+    <div class="step-info" id="stepInfo">Bấm “Xử lý bước 1/6” để bắt đầu. Mỗi lần bấm chỉ thực hiện một công đoạn và ghi nhận kết quả vào nhật ký API.</div>
+    <div class="alert" id="alertBox"></div>
+   </div>
+   <div class="notice">“Xử lý bước tiếp theo” chạy từng công đoạn theo thao tác của bạn. “Chạy tự động” tiếp tục từ bước chưa xử lý hiện tại, lần lượt hiển thị từng công đoạn; có thể dừng sau khi bước đang chạy hoàn tất. Kịch bản HIGH sẽ ghi nhận các dịch vụ bị bỏ qua theo chính sách an toàn.</div>
+  </div>
+  <div class="panel"><div class="panel-head"><div class="panel-title">Thông tin tích hợp Shopee</div><span class="status sim" style="margin:0">API DEMO</span></div>
+   <div style="font-size:11px;line-height:1.65;color:#71839a">Luồng minh họa cho đơn hàng thuộc gian hàng Shopee đã cấp quyền cho ứng dụng:</div>
+   <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px"><span class="pill" style="font-size:9px">get_shipping_parameter</span><span class="pill" style="font-size:9px">ship_order</span><span class="pill" style="font-size:9px">get_tracking_info</span></div>
+   <div class="notice">Đơn hàng trên sàn TMĐT độc lập không tự động trở thành đơn Shopee. Tích hợp thật cần App, Partner Key và quyền ủy quyền gian hàng.</div>
+  </div>
+ </section>
+</div>
+<div class="footer">NetShop • Prototype minh họa môn Mạng máy tính • Chỉ sử dụng dữ liệu giả lập</div>
+</main></div>
+<script>
+let scenario = 'low';
+let currentStep = 0;
+let isProcessing = false;
+let isAutoRunning = false;
+let stepTimer = null;
+let autoDelayTimer = null;
+
+const stepNames = [
+  'WAF kiểm tra request',
+  'Turnstile xác minh token',
+  'Backend tính Risk Score',
+  'MoMo Payment API',
+  'Shopee Logistics API',
+  'Firebase Cloud Messaging'
+];
+
+const stepDescriptions = [
+  'Request POST /checkout được gửi đến hệ thống. Cloudflare WAF kiểm tra request trước khi cho phép đi vào backend.',
+  'Backend gửi token đến bước xác minh Turnstile. Kết quả mô phỏng xác nhận người dùng hợp lệ, không phải bot.',
+  'Backend phân tích dữ liệu đơn hàng và tính Risk Score. LOW được tiếp tục; HIGH sẽ chuyển đơn sang trạng thái chờ quản trị viên.',
+  'Với đơn LOW, backend tạo yêu cầu thanh toán qua MoMo Sandbox. Với đơn HIGH, bước này bị bỏ qua theo chính sách rủi ro.',
+  'Với đơn LOW, hệ thống lần lượt lấy tham số vận chuyển (get_shipping_parameter) và tạo vận đơn (ship_order).',
+  'Với đơn LOW, Firebase Cloud Messaging ghi nhận gửi thông báo trạng thái đơn hàng. Đơn HIGH không gửi thông báo giao hàng.'
+];
+
+function renderSteps() {
+  const low = scenario === 'low';
+  document.getElementById('steps').innerHTML = stepNames.map((name, i) => {
+    let state = 'pending';
+    let detail = i < 3 ? 'Chờ xử lý' : 'Chờ quyết định';
+    let dot = String(i + 1);
+
+    if (i < currentStep) {
+      const wasSkipped = !low && i >= 3;
+      state = wasSkipped ? 'blocked' : 'done';
+      detail = wasSkipped ? 'Bỏ qua · Risk HIGH' : 'Hoàn tất';
+      dot = wasSkipped ? '–' : '✓';
+    } else if (i === currentStep && isProcessing) {
+      state = 'active';
+      detail = 'Đang xử lý…';
+      dot = '…';
+    }
+
+    return `<div class="step ${state}"><div class="dot">${dot}</div><span>${name}</span><span class="detail">${detail}</span></div>`;
+  }).join('');
+}
+
+function updateProgress() {
+  const completed = currentStep;
+  document.getElementById('progressLabel').textContent = completed === 0
+    ? 'Chưa bắt đầu'
+    : (completed === 6 ? 'Đã xử lý xong workflow' : `Đã xử lý ${completed} công đoạn`);
+  document.getElementById('progressCount').textContent = `${completed}/6 bước`;
+  document.getElementById('progressFill').style.width = `${(completed / 6) * 100}%`;
+  const nextBtn = document.getElementById('nextStepBtn');
+  const autoBtn = document.getElementById('autoRunBtn');
+  nextBtn.disabled = isProcessing || isAutoRunning || currentStep >= 6;
+  document.getElementById('resetStepBtn').disabled = false;
+  document.getElementById('lowBtn').disabled = isProcessing || isAutoRunning;
+  document.getElementById('highBtn').disabled = isProcessing || isAutoRunning;
+  nextBtn.textContent = currentStep >= 6
+    ? '✓ Workflow đã kết thúc'
+    : `▶ Xử lý bước ${currentStep + 1}/6`;
+  autoBtn.disabled = currentStep >= 6 || (isProcessing && !isAutoRunning);
+  autoBtn.textContent = isAutoRunning ? 'Ⅱ Dừng tự động' : '⏩ Chạy tự động';
+}
+
+function appendLog(color, message) {
+  const log = document.getElementById('log');
+  const time = new Date().toLocaleTimeString('vi-VN', { hour12: false });
+  log.innerHTML += `<br><span class="${color}">[${time}] ${message}</span>`;
+  log.scrollTop = log.scrollHeight;
+  document.getElementById('logState').textContent = `${currentStep}/6 bước đã ghi nhận`;
+}
+
+function setScenario(s) {
+  if (isProcessing || isAutoRunning) return;
+  scenario = s;
+  document.getElementById('lowBtn').classList.toggle('selected', s === 'low');
+  document.getElementById('highBtn').classList.toggle('selected', s === 'high');
+  resetDemo(false);
+}
+
+function resetDemo(clear = true) {
+  if (stepTimer !== null) window.clearTimeout(stepTimer);
+  if (autoDelayTimer !== null) window.clearTimeout(autoDelayTimer);
+  stepTimer = null;
+  autoDelayTimer = null;
+  currentStep = 0;
+  isProcessing = false;
+  isAutoRunning = false;
+  document.getElementById('kpiSecurity').textContent = 'Chờ';
+  document.getElementById('kpiStatus').textContent = 'Chưa chạy';
+  document.getElementById('riskBadge').textContent = 'Chưa đánh giá';
+  document.getElementById('riskBadge').className = 'risk';
+  document.getElementById('alertBox').className = 'alert';
+  document.getElementById('alertBox').textContent = '';
+  document.getElementById('stepInfo').textContent = 'Bấm “Xử lý bước 1/6” để bắt đầu. Mỗi lần bấm chỉ thực hiện một công đoạn và ghi nhận kết quả vào nhật ký API.';
+  if (clear) {
+    document.getElementById('log').innerHTML = '<span class="orange">[SYSTEM]</span> Prototype đã được đặt lại.<br><span class="green">[INFO]</span> Chọn kịch bản, sau đó bấm “Xử lý bước tiếp theo”.';
+  } else {
+    document.getElementById('log').innerHTML = '<span class="orange">[SYSTEM]</span> Đã chọn kịch bản mới.<br><span class="green">[INFO]</span> Workflow đang ở trạng thái chờ bắt đầu.';
+  }
+  document.getElementById('logState').textContent = 'Chưa có sự kiện';
+  renderSteps();
+  updateProgress();
+}
+
+function finishWorkflow() {
+  const low = scenario === 'low';
+  const alert = document.getElementById('alertBox');
+  if (low) {
+    document.getElementById('kpiStatus').textContent = 'Hoàn tất';
+    alert.className = 'alert show good';
+    alert.innerHTML = '<b>Workflow hoàn tất.</b> Các bước WAF, Turnstile, Risk Score, MoMo Sandbox, Shopee Logistics và FCM đã được mô phỏng lần lượt. Mã vận đơn mẫu: SPX-DEMO-001.';
+    document.getElementById('stepInfo').textContent = 'Đã hoàn tất 6/6 bước. Tất cả kết quả chỉ là dữ liệu giả lập, không phát sinh giao dịch hoặc vận đơn thật.';
+    appendLog('green', 'WORKFLOW hoàn tất · Order status = READY_FOR_SHIPPING (mock)');
+  } else {
+    document.getElementById('kpiStatus').textContent = 'Tạm giữ';
+    alert.className = 'alert show warn';
+    alert.innerHTML = '<b>Workflow kết thúc an toàn.</b> Risk Score 72 ≥ 40 nên đơn được chuyển ON_HOLD. MoMo, Shopee Logistics và thông báo giao hàng đều đã bị bỏ qua; quản trị viên cần kiểm tra thủ công.';
+    document.getElementById('stepInfo').textContent = 'Đã ghi nhận 6/6 bước. Ba dịch vụ sau bước đánh giá rủi ro được đánh dấu bỏ qua, không có thanh toán hoặc vận đơn nào được tạo.';
+    appendLog('red', 'WORKFLOW kết thúc · Order status = ON_HOLD · Manual review required');
+  }
+  document.getElementById('logState').textContent = 'Workflow đã kết thúc';
+}
+
+function processCurrentStep() {
+  const low = scenario === 'low';
+  const i = currentStep;
+  const risk = low ? 18 : 72;
+  let message = '';
+  let color = 'green';
+  let info = stepDescriptions[i];
+
+  if (i === 0) {
+    document.getElementById('kpiSecurity').textContent = 'Đang kiểm tra';
+    message = 'WAF · POST /checkout → Request allowed · HTTP 200 (mock)';
+    document.getElementById('kpiSecurity').textContent = 'PASS';
+  } else if (i === 1) {
+    message = 'Turnstile · Siteverify → success · Token hợp lệ (mock)';
+  } else if (i === 2) {
+    message = `Backend · Risk Score = ${risk}/100 → ${low ? 'LOW' : 'HIGH'}`;
+    document.getElementById('riskBadge').textContent = `RISK ${risk} · ${low ? 'LOW' : 'HIGH'}`;
+    document.getElementById('riskBadge').className = `risk ${low ? 'low' : 'high'}`;
+    document.getElementById('kpiStatus').textContent = low ? 'Đang xử lý' : 'Tạm giữ';
+    if (!low) {
+      document.getElementById('alertBox').className = 'alert show warn';
+      document.getElementById('alertBox').innerHTML = '<b>Phát hiện đơn có rủi ro cao.</b> Risk Score 72 ≥ 40. Các bước thanh toán, vận chuyển và thông báo sẽ không được thực hiện.';
+      color = 'orange';
+    }
+  } else if (i === 3) {
+    if (low) {
+      message = 'MoMo · create payment → SUCCESS · Sandbox mock';
+    } else {
+      message = 'MoMo · SKIPPED · Không gọi API do Risk Score HIGH';
+      color = 'red';
+    }
+  } else if (i === 4) {
+    if (low) {
+      message = 'Shopee Logistics · get_shipping_parameter → OK; ship_order → SUCCESS · SPX-DEMO-001 (mock)';
+    } else {
+      message = 'Shopee Logistics · SKIPPED · Không tạo vận đơn do Risk Score HIGH';
+      color = 'red';
+    }
+  } else if (i === 5) {
+    if (low) {
+      message = 'Firebase Cloud Messaging · send notification → ACCEPTED (mock)';
+    } else {
+      message = 'Firebase Cloud Messaging · SKIPPED · Không gửi thông báo giao hàng do Risk Score HIGH';
+      color = 'red';
+    }
+  }
+
+  currentStep += 1;
+  appendLog(color, message);
+  document.getElementById('stepInfo').textContent = info;
+  renderSteps();
+  updateProgress();
+
+  if (currentStep === 6) {
+    finishWorkflow();
+    renderSteps();
+    updateProgress();
+  }
+}
+
+function startCurrentStep() {
+  if (isProcessing || currentStep >= 6) return;
+  isProcessing = true;
+  renderSteps();
+  updateProgress();
+  document.getElementById('stepInfo').textContent = `Đang xử lý: ${stepNames[currentStep]}…`;
+  appendLog('orange', `BẮT ĐẦU · ${stepNames[currentStep]}`);
+
+  // Giữ trạng thái đang xử lý đủ lâu để người xem theo dõi từng công đoạn.
+  stepTimer = window.setTimeout(() => {
+    stepTimer = null;
+    processCurrentStep();
+    isProcessing = false;
+    renderSteps();
+    updateProgress();
+
+    if (isAutoRunning && currentStep < 6) {
+      autoDelayTimer = window.setTimeout(() => {
+        autoDelayTimer = null;
+        runNextAutomaticStep();
+      }, 450);
+    } else if (currentStep >= 6) {
+      isAutoRunning = false;
+      updateProgress();
+    }
+  }, 750);
+}
+
+function nextStep() {
+  if (isProcessing || isAutoRunning || currentStep >= 6) return;
+  startCurrentStep();
+}
+
+function runNextAutomaticStep() {
+  if (!isAutoRunning || isProcessing || currentStep >= 6) return;
+  startCurrentStep();
+}
+
+function toggleAutoRun() {
+  if (isAutoRunning) {
+    // Nếu đang xử lý một công đoạn, để công đoạn đó hoàn tất rồi mới dừng.
+    isAutoRunning = false;
+    if (autoDelayTimer !== null) {
+      window.clearTimeout(autoDelayTimer);
+      autoDelayTimer = null;
+    }
+    document.getElementById('stepInfo').textContent = isProcessing
+      ? 'Đã yêu cầu dừng. Công đoạn hiện tại sẽ hoàn tất, sau đó workflow tạm dừng.'
+      : 'Workflow đã tạm dừng. Bạn có thể tiếp tục bằng nút Chạy tự động hoặc xử lý từng bước.';
+    updateProgress();
+    return;
+  }
+
+  if (isProcessing || currentStep >= 6) return;
+  isAutoRunning = true;
+  document.getElementById('stepInfo').textContent = currentStep === 0
+    ? 'Đang chạy tự động từ bước 1. Mỗi công đoạn sẽ lần lượt hiển thị trạng thái xử lý và kết quả.'
+    : `Đang chạy tự động từ bước ${currentStep + 1}. Các bước đã hoàn tất sẽ được giữ nguyên.`;
+  updateProgress();
+  runNextAutomaticStep();
+}
+
+resetDemo(false);
+</script>
+</body>
+</html>
