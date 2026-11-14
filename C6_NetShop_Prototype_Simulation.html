@@ -16,14 +16,37 @@ main{padding:27px 32px 38px;max-width:1320px;width:100%;margin:0 auto}.crumb{fon
 .order{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-size:10px;font-weight:700;color:#687c94;margin-bottom:6px}.field input,.field select{width:100%;border:1px solid #dce5ef;border-radius:8px;padding:10px 11px;background:#fbfdff;color:#28435e;font-size:12px;outline:none}.field input:focus,.field select:focus{border-color:#77a6e8;box-shadow:0 0 0 3px #eaf2ff}.scenario{display:flex;gap:8px;margin:11px 0 14px}.scenario button{flex:1;border:1px solid #dce5ef;background:#fff;color:#647891;border-radius:8px;padding:9px 8px;font-size:11px;font-weight:700;cursor:pointer}.scenario button.selected{border-color:#76a8eb;background:#edf5ff;color:#245ca8}.runbar{display:flex;gap:9px;align-items:center}.runbar .btn{flex:1}.runbar .btn.outline{flex:0 0 auto}
 .process{border:1px solid var(--line);background:#f9fbfe;border-radius:11px;padding:13px;margin-top:14px}.process-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.process-title{font-size:12px;font-weight:800}.risk{font-weight:800;font-size:11px;padding:5px 9px;border-radius:20px;background:#edf1f6;color:#718197}.risk.low{color:#14784f;background:#e6f7ef}.risk.high{color:#b63e3e;background:#ffebeb}.progress-meta{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#71839a;margin:10px 0 6px}.progress-track{height:7px;background:#e8eef6;border-radius:20px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#2868c7,#41b99a);border-radius:20px;transition:width .3s ease}.steps{display:grid;gap:7px;margin-top:11px}.step{display:flex;align-items:center;gap:9px;border:1px solid #e5ebf2;background:white;border-radius:8px;padding:9px;font-size:11px;color:#6f8197;transition:border-color .2s,background .2s}.step .dot{width:22px;height:22px;border-radius:7px;background:#eef3fa;display:grid;place-items:center;font-size:11px;flex-shrink:0}.step.done{border-color:#b8e5d1;background:#f4fcf8;color:#236b4d}.step.done .dot{background:#ddf4e8;color:#16855b}.step.active{border-color:#8bb7f0;background:#f0f6ff;color:#245ca8;box-shadow:0 0 0 2px #e4efff}.step.active .dot{background:#dceaff;color:#245ca8}.step.blocked{border-color:#f0c7c7;background:#fff7f7;color:#a34444}.step.blocked .dot{background:#ffe4e4;color:#bd4444}.step .detail{margin-left:auto;font-size:9px;color:#8a9aae;text-align:right}.step.active .detail{color:#245ca8;font-weight:700}.step.done .detail{color:#287b59}.step.blocked .detail{color:#b34444}.step-info{font-size:10px;color:#687c94;line-height:1.5;margin-top:10px;padding:9px 10px;background:#fff;border:1px dashed #d8e3f0;border-radius:8px;min-height:38px}.step-controls{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}.step-controls .btn{flex:1 1 145px}.btn.auto{background:#16855b;color:#fff;box-shadow:0 4px 10px #16855b24}.btn.auto:hover{background:#11764f}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.log{font-family:Consolas,monospace;font-size:10px;line-height:1.65;color:#536b86;background:#101e31;border-radius:9px;padding:11px 12px;min-height:128px;max-height:260px;overflow:auto}.log .green{color:#7be1b4}.log .orange{color:#ffd28a}.log .red{color:#ff9a9a}.notice{font-size:10px;color:#8392a6;line-height:1.5;margin-top:10px}.alert{border-radius:9px;padding:11px 12px;font-size:11px;margin-top:10px;line-height:1.45;display:none}.alert.show{display:block}.alert.good{color:#176b4b;background:#eaf8f1;border:1px solid #c8ebd8}.alert.warn{color:#9c3d3d;background:#fff0f0;border:1px solid #f0caca}
 .footer{font-size:10px;color:#9aa7b7;text-align:right;margin-top:4px}
-@media(max-width:1050px){.layout{grid-template-columns:1fr}.side{display:none}.grid{grid-template-columns:1fr}.service-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Workspace navigation and additional pages */
+.nav{width:100%;border:0;background:transparent;text-align:left;cursor:pointer;font-family:inherit;position:relative}
+.nav:hover{background:#f5f8fc;color:#285d9f}.nav-count{margin-left:auto;font-size:10px;font-weight:800;background:#edf2f8;color:#687d96;padding:3px 7px;border-radius:20px}.nav-count.unread{background:#fff0e8;color:#c45d22}
+.view{display:none}.view.active{display:block}.page-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin:4px 0 20px}.page-heading h1{font-size:25px;margin:0 0 6px;letter-spacing:-.4px}.page-heading p{margin:0;color:#77879d;font-size:13px}.heading-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.four-kpis{grid-template-columns:repeat(4,1fr)}.three-kpis{grid-template-columns:repeat(3,1fr)}
+.toolbar{display:flex;gap:10px;margin:0 0 14px;align-items:center}.searchbox{display:flex;align-items:center;gap:8px;flex:1;border:1px solid #dce5ef;border-radius:9px;background:#fbfdff;padding:0 11px;color:#8091a6}.searchbox input{border:0;outline:0;background:transparent;padding:10px 0;width:100%;font-size:12px;color:#28435e}.filter-select{border:1px solid #dce5ef;border-radius:9px;background:#fff;padding:10px;color:#526982;font-size:12px}
+.table-wrap{width:100%;overflow-x:auto}.data-table{width:100%;border-collapse:collapse;font-size:11px;min-width:680px}.data-table th{text-align:left;color:#8090a4;font-size:10px;font-weight:700;background:#f8fafd;padding:11px 10px;white-space:nowrap}.data-table td{padding:12px 10px;border-top:1px solid #edf1f6;color:#526982;vertical-align:middle}.data-table td strong{color:#28435e}.table-foot{display:flex;justify-content:space-between;gap:10px;margin-top:12px;color:#8897aa;font-size:10px}.status-pill{display:inline-block;border-radius:20px;padding:5px 8px;font-size:9px;font-weight:800;white-space:nowrap}.st-pending{background:#fff4df;color:#9a641e}.st-shipping{background:#eaf2ff;color:#285fa6}.st-done{background:#e6f7ef;color:#147a53}.st-hold{background:#ffebeb;color:#b13e3e}.st-wait{background:#f0edff;color:#6657aa}.row-action{border:0;background:transparent;color:#2768bb;font-size:10px;font-weight:800;cursor:pointer}.row-action:hover{text-decoration:underline}.lifecycle{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.lifecycle>div{display:flex;flex-direction:column;gap:4px;min-width:110px;flex:1}.lifecycle b{font-size:10px;color:#2868c7}.lifecycle strong{font-size:11px}.lifecycle span{font-size:9px;color:#8493a6}.lifecycle i{font-style:normal;color:#aab7c7}
+.security-grid{grid-template-columns:1.2fr .8fr}.security-feature{display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid #edf1f6}.security-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex:0 0 auto}.waf-icon{background:#fff0df;color:#df791e}.ts-icon{background:#e9f2ff;color:#2468bc}.security-copy{flex:1;min-width:0}.security-copy strong{font-size:12px}.security-copy p{font-size:10px;line-height:1.5;color:#7c8ca0;margin:5px 0}.compact{padding:8px 10px;font-size:10px;white-space:nowrap}.text-button{border:0;background:transparent;color:#2868c7;font-size:10px;cursor:pointer}.policy-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid #edf1f6}.policy-row:first-of-type{border-top:0}.policy-row div{display:flex;flex-direction:column;gap:4px}.policy-row strong{font-size:11px}.policy-row span{font-size:9px;color:#8796a9}.toggle{border-radius:20px;padding:5px 9px;background:#e6f7ef;color:#147a53!important;font-size:9px!important;font-weight:800}.threshold{background:#edf4ff;color:#285fa6!important;border-radius:7px;padding:6px 8px;font-weight:800}.policy-note,.panel-description{font-size:10px;line-height:1.55;color:#8292a6}.policy-note{background:#f8fafd;padding:10px;border-radius:8px;margin-top:10px}.full-btn{width:100%}.inline-feedback{font-size:10px;line-height:1.5;color:#74879d;margin-top:10px;min-height:14px}.monitor-pill{display:inline-flex;align-items:center;gap:7px;border-radius:20px;background:#e8f7f0;color:#147a53;padding:8px 10px;font-size:10px;font-weight:800}.monitor-pill.paused{background:#fff4df;color:#996017}.pulse-dot{width:7px;height:7px;border-radius:50%;background:#16855b}.monitor-pill.paused .pulse-dot{background:#d38a22}
+.api-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.api-card{border:1px solid #e5ebf2;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}.api-card-top{display:flex;align-items:center;gap:10px}.api-card-top .service-logo{flex:0 0 auto}.api-card-top strong{font-size:12px}.api-card-top .status{margin:4px 0 0}.api-card p{font-size:10px;line-height:1.5;color:#7d8da1;margin:0;min-height:30px}.api-meta{display:flex;justify-content:space-between;gap:8px;color:#8a99ab;font-size:9px;border-top:1px solid #edf1f6;padding-top:9px}.api-actions{display:flex;gap:8px}.api-actions .btn{flex:1;padding:8px;font-size:10px}.integration-notes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.integration-notes>div{border:1px solid #e8edf4;border-radius:10px;padding:12px}.integration-notes b{font-size:11px}.integration-notes p{font-size:10px;color:#7e8ea2;line-height:1.5;margin:6px 0 0}
+.notification-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.notification-filters{display:flex;gap:5px}.filter-chip{border:1px solid #e1e8f0;background:#fff;color:#71839a;border-radius:20px;padding:6px 9px;font-size:9px;font-weight:700;cursor:pointer}.filter-chip.active{background:#eaf2ff;border-color:#c9ddfa;color:#245da8}.notification-list{display:grid;gap:8px}.notification-item{display:flex;align-items:flex-start;gap:10px;padding:11px;border:1px solid #edf1f6;border-radius:10px;cursor:pointer}.notification-item:hover{border-color:#c8d9ee;background:#fbfdff}.notification-item.unread{background:#f6f9ff;border-color:#dce8f8}.notification-symbol{width:32px;height:32px;border-radius:10px;background:#edf4ff;display:grid;place-items:center;flex:0 0 auto}.notification-copy{flex:1;min-width:0}.notification-copy strong{font-size:11px}.notification-copy p{font-size:10px;color:#74869c;line-height:1.45;margin:4px 0}.notification-copy small{font-size:9px;color:#98a5b5}.unread-dot{width:7px;height:7px;border-radius:50%;background:#2868c7;margin-top:5px;flex:0 0 auto}.field-block{margin-bottom:12px}.field-block label{display:block;font-size:10px;font-weight:700;color:#687c94;margin-bottom:6px}.field-block input,.field-block select,.field-block textarea{width:100%;border:1px solid #dce5ef;border-radius:8px;padding:10px 11px;background:#fbfdff;color:#28435e;font-size:11px;font-family:inherit;outline:none;resize:vertical}.field-block input:focus,.field-block select:focus,.field-block textarea:focus{border-color:#77a6e8;box-shadow:0 0 0 3px #eaf2ff}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#142b4a70;z-index:50;align-items:center;justify-content:center;padding:18px}.modal-backdrop.show{display:flex}.modal-card{background:#fff;border-radius:15px;box-shadow:0 18px 55px #142b4a30;width:min(540px,100%);max-height:85vh;overflow:auto;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}.modal-head h2{font-size:18px;margin:4px 0}.modal-close{border:0;background:#f1f4f8;border-radius:8px;width:30px;height:30px;font-size:20px;color:#647891;cursor:pointer}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.detail-cell{background:#f8fafd;border-radius:9px;padding:11px}.detail-cell span{display:block;font-size:9px;color:#8998aa;margin-bottom:5px}.detail-cell strong{font-size:11px;color:#304b68}.modal-description{font-size:11px;color:#6e8198;line-height:1.6}.endpoint{font-family:Consolas,monospace;font-size:10px;background:#101e31;color:#8ce4ba;border-radius:8px;padding:11px;overflow-wrap:anywhere}.empty-state{padding:25px;text-align:center;color:#8b9aad;font-size:11px}
+@media(max-width:1050px){.side{display:flex;gap:5px;align-items:center;overflow-x:auto;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line)}.sidehead,.side-note{display:none}.side .nav{width:auto;flex:0 0 auto;margin:0;padding:10px 12px}.side .nav-count{display:none}}
+@media(max-width:760px){main{padding:20px 14px 28px}.topbar{padding:0 14px}.topright>span:not(.pill){display:none}.four-kpis{grid-template-columns:repeat(2,1fr)}.three-kpis{grid-template-columns:1fr 1fr}.page-heading{flex-direction:column}.notification-layout,.security-grid{grid-template-columns:1fr}.api-grid,.integration-notes{grid-template-columns:1fr}.lifecycle{align-items:flex-start}.lifecycle>div{min-width:100px}.lifecycle i{display:none}.toolbar{flex-direction:column;align-items:stretch}.filter-select{width:100%}}
+
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.service-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 <header class="topbar"><div class="brand"><div class="brand-mark">N</div><div>NetShop <span style="font-weight:400;color:#8192a6">| Internet Services</span></div></div><div class="topright"><span class="pill">PROTOTYPE • SANDBOX MÔ PHỎNG</span><span>Quản trị hệ thống</span><div class="user">AD</div></div></header>
 <div class="layout">
-<aside class="side"><div class="sidehead">WORKSPACE</div><div class="nav active"><span class="navico">▦</span>Tổng quan</div><div class="nav"><span class="navico">🛍</span>Đơn hàng</div><div class="nav"><span class="navico">🔐</span>Bảo mật</div><div class="nav"><span class="navico">🔌</span>Tích hợp API</div><div class="nav"><span class="navico">🔔</span>Thông báo</div><div class="side-note"><b>Phạm vi prototype</b><br>Minh họa luồng xử lý bằng dữ liệu mẫu. Chưa kết nối tài khoản/API thật của nhà cung cấp.</div></aside>
+<aside class="side">
+ <div class="sidehead">WORKSPACE</div>
+ <button class="nav active" data-view="overview" onclick="switchView('overview')"><span class="navico">▦</span>Tổng quan</button>
+ <button class="nav" data-view="orders" onclick="switchView('orders')"><span class="navico">🛍</span>Đơn hàng <span class="nav-count" id="navOrderCount">04</span></button>
+ <button class="nav" data-view="security" onclick="switchView('security')"><span class="navico">🔐</span>Bảo mật</button>
+ <button class="nav" data-view="apis" onclick="switchView('apis')"><span class="navico">🔌</span>Tích hợp API</button>
+ <button class="nav" data-view="notifications" onclick="switchView('notifications')"><span class="navico">🔔</span>Thông báo <span class="nav-count unread" id="navUnreadCount">03</span></button>
+ <div class="side-note"><b>Phạm vi prototype</b><br>Minh họa luồng xử lý bằng dữ liệu mẫu. Chưa kết nối tài khoản/API thật của nhà cung cấp.</div>
+</aside>
 <main>
+<section class="view active" id="view-overview">
 <div class="crumb">Trang chủ / Tổng quan / Kiểm thử tích hợp</div>
 <div class="heading"><div><h1>Trung tâm điều phối đơn hàng</h1><p>Theo dõi các dịch vụ Internet và mô phỏng quy trình đặt hàng tự động.</p></div><button class="btn outline" onclick="resetDemo()">↻ Đặt lại demo</button></div>
 <div class="kpis">
@@ -80,6 +103,85 @@ main{padding:27px 32px 38px;max-width:1320px;width:100%;margin:0 auto}.crumb{fon
  </section>
 </div>
 <div class="footer">NetShop • Prototype minh họa môn Mạng máy tính • Chỉ sử dụng dữ liệu giả lập</div>
+</section>
+
+<section class="view" id="view-orders">
+ <div class="crumb">Trang chủ / Đơn hàng</div>
+ <div class="page-heading"><div><h1>Quản lý đơn hàng</h1><p>Theo dõi, tìm kiếm và kiểm tra trạng thái các đơn hàng mẫu trong hệ thống.</p></div><div class="heading-actions"><button class="btn outline" onclick="exportOrdersCSV()">↓ Xuất CSV</button><button class="btn primary" onclick="addSampleOrder()">＋ Tạo đơn mẫu</button></div></div>
+ <div class="kpis four-kpis">
+  <div class="kpi"><div class="kpi-top">Tổng đơn hàng <span class="kpi-icon">🧾</span></div><div class="kpi-num" id="ordersTotal">04</div><div class="kpi-foot">Tất cả đơn trong prototype</div></div>
+  <div class="kpi"><div class="kpi-top">Chờ xử lý <span class="kpi-icon">⏳</span></div><div class="kpi-num" id="ordersPending">01</div><div class="kpi-foot">Đang chờ hệ thống tiếp nhận</div></div>
+  <div class="kpi"><div class="kpi-top">Đang vận chuyển <span class="kpi-icon">🚚</span></div><div class="kpi-num" id="ordersShipping">01</div><div class="kpi-foot">Có thông tin vận chuyển mẫu</div></div>
+  <div class="kpi"><div class="kpi-top">Cần kiểm tra <span class="kpi-icon">⚑</span></div><div class="kpi-num" id="ordersHold">01</div><div class="kpi-foot">Đơn có Risk Score cao</div></div>
+ </div>
+ <div class="panel">
+  <div class="panel-head"><div><div class="panel-title">Danh sách đơn hàng</div><div class="small">Dữ liệu mẫu dùng để minh họa chức năng quản trị</div></div><span class="status sim">SANDBOX DATA</span></div>
+  <div class="toolbar"><div class="searchbox">⌕ <input id="orderSearch" type="search" placeholder="Tìm mã đơn hoặc tên khách hàng..." oninput="renderOrders()"></div><select id="orderStatusFilter" class="filter-select" onchange="renderOrders()"><option value="all">Tất cả trạng thái</option><option>Chờ xử lý</option><option>Đang vận chuyển</option><option>Chờ giao hàng</option><option>Hoàn tất</option><option>Tạm giữ</option></select></div>
+  <div class="table-wrap"><table class="data-table"><thead><tr><th>Mã đơn hàng</th><th>Khách hàng</th><th>Sản phẩm</th><th>Giá trị</th><th>Ngày tạo</th><th>Trạng thái</th><th></th></tr></thead><tbody id="ordersTableBody"></tbody></table></div>
+  <div class="table-foot"><span id="ordersResultCount">Hiển thị 4 đơn hàng</span><span>Dữ liệu chỉ mang tính minh họa</span></div>
+ </div>
+ <div class="panel"><div class="panel-head"><div class="panel-title">Quy trình xử lý đơn hàng</div><span class="small">ORDER LIFECYCLE</span></div><div class="lifecycle"><div><b>01</b><strong>Tiếp nhận</strong><span>WAF kiểm tra request</span></div><i>→</i><div><b>02</b><strong>Xác minh</strong><span>Turnstile + Risk Score</span></div><i>→</i><div><b>03</b><strong>Thanh toán</strong><span>MoMo Payment API</span></div><i>→</i><div><b>04</b><strong>Vận chuyển</strong><span>Shopee Logistics API</span></div><i>→</i><div><b>05</b><strong>Thông báo</strong><span>Firebase Cloud Messaging</span></div></div></div>
+</section>
+
+<section class="view" id="view-security">
+ <div class="crumb">Trang chủ / Bảo mật</div>
+ <div class="page-heading"><div><h1>Trung tâm bảo mật</h1><p>Giám sát request, xác minh người dùng và theo dõi các sự kiện rủi ro.</p></div><div class="heading-actions"><span class="monitor-pill" id="monitorState"><span class="pulse-dot"></span> Đang giám sát</span><button class="btn outline" id="monitorToggle" onclick="toggleMonitoring()">Tạm dừng giám sát</button></div></div>
+ <div class="kpis four-kpis">
+  <div class="kpi"><div class="kpi-top">WAF kiểm tra <span class="kpi-icon">☁</span></div><div class="kpi-num">128</div><div class="kpi-foot">Request mẫu đã được phân tích</div></div>
+  <div class="kpi"><div class="kpi-top">Request hợp lệ <span class="kpi-icon">✓</span></div><div class="kpi-num">124</div><div class="kpi-foot">Được phép đi tiếp vào backend</div></div>
+  <div class="kpi"><div class="kpi-top">Token xác minh <span class="kpi-icon">🛡</span></div><div class="kpi-num">96%</div><div class="kpi-foot">Tỷ lệ xác minh thành công mẫu</div></div>
+  <div class="kpi"><div class="kpi-top">Cảnh báo cần xem <span class="kpi-icon">⚑</span></div><div class="kpi-num" id="securityAlertCount">02</div><div class="kpi-foot">Sự kiện được ghi nhận trong demo</div></div>
+ </div>
+ <div class="grid security-grid">
+  <div>
+   <div class="panel"><div class="panel-head"><div class="panel-title">Lớp bảo vệ đang sử dụng</div><span class="status ok">2 LỚP BẢO VỆ</span></div>
+    <div class="security-feature"><div class="security-icon waf-icon">☁</div><div class="security-copy"><strong>Cloudflare WAF</strong><p>Lọc request HTTP/HTTPS và kiểm tra các dấu hiệu bất thường trước khi chuyển đến backend.</p><span class="status ok">● Đang hoạt động mô phỏng</span></div><button class="btn outline compact" onclick="runSecurityCheck('WAF')">Kiểm tra ngay</button></div>
+    <div class="security-feature"><div class="security-icon ts-icon">✓</div><div class="security-copy"><strong>Cloudflare Turnstile</strong><p>Xác minh token để hỗ trợ phân biệt người dùng hợp lệ và lưu lượng tự động.</p><span class="status ok">● Đang hoạt động mô phỏng</span></div><button class="btn outline compact" onclick="runSecurityCheck('Turnstile')">Kiểm tra ngay</button></div>
+   </div>
+   <div class="panel"><div class="panel-head"><div class="panel-title">Nhật ký sự kiện bảo mật</div><button class="text-button" onclick="clearSecurityEvents()">Ẩn nhật ký</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Thời gian</th><th>Thành phần</th><th>Sự kiện</th><th>Mức độ</th></tr></thead><tbody id="securityEventsBody"></tbody></table></div></div>
+  </div>
+  <div>
+   <div class="panel"><div class="panel-head"><div class="panel-title">Chính sách kiểm soát</div><span class="small">DEMO POLICY</span></div>
+    <div class="policy-row"><div><strong>Kiểm tra WAF</strong><span>Phân tích request trước khi xử lý</span></div><span class="toggle on">ON</span></div>
+    <div class="policy-row"><div><strong>Xác minh Turnstile</strong><span>Yêu cầu token hợp lệ khi checkout</span></div><span class="toggle on">ON</span></div>
+    <div class="policy-row"><div><strong>Ngưỡng Risk Score</strong><span>Đơn từ 40 điểm được chuyển kiểm tra</span></div><span class="threshold">40 / 100</span></div>
+    <div class="policy-note">Các chính sách chỉ được mô tả và mô phỏng trên giao diện; chưa áp dụng cho lưu lượng truy cập thật.</div>
+   </div>
+   <div class="panel"><div class="panel-head"><div class="panel-title">Thử nghiệm an toàn</div></div><p class="panel-description">Tạo một sự kiện kiểm thử giả lập để xem hệ thống ghi nhận và hiển thị cảnh báo.</p><button class="btn primary full-btn" onclick="simulateSecurityAlert()">＋ Tạo sự kiện rủi ro mẫu</button><div id="securityFeedback" class="inline-feedback"></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="view" id="view-apis">
+ <div class="crumb">Trang chủ / Tích hợp API</div>
+ <div class="page-heading"><div><h1>Quản lý tích hợp API</h1><p>Kiểm tra trạng thái các dịch vụ bên ngoài và xem mục đích sử dụng trong workflow.</p></div><div class="heading-actions"><button class="btn primary" id="checkAllApisBtn" onclick="checkAllApis()">⟳ Kiểm tra tất cả</button></div></div>
+ <div class="kpis four-kpis">
+  <div class="kpi"><div class="kpi-top">Tổng dịch vụ <span class="kpi-icon">🔌</span></div><div class="kpi-num">06</div><div class="kpi-foot">Các dịch vụ trong prototype</div></div>
+  <div class="kpi"><div class="kpi-top">Sẵn sàng mô phỏng <span class="kpi-icon">✓</span></div><div class="kpi-num" id="apiReadyCount">06</div><div class="kpi-foot">Có thể chạy kiểm tra giả lập</div></div>
+  <div class="kpi"><div class="kpi-top">Kiểm tra gần nhất <span class="kpi-icon">◷</span></div><div class="kpi-num" id="apiLastCheck">—</div><div class="kpi-foot">Thời gian trên trình duyệt</div></div>
+  <div class="kpi"><div class="kpi-top">Kết nối thật <span class="kpi-icon">🔒</span></div><div class="kpi-num">0</div><div class="kpi-foot">Chưa cấu hình thông tin xác thực</div></div>
+ </div>
+ <div class="panel"><div class="panel-head"><div><div class="panel-title">Danh sách dịch vụ</div><div class="small">Chọn “Chi tiết” để xem vai trò và endpoint minh họa.</div></div><span class="status sim">MOCK ENVIRONMENT</span></div><div class="api-grid" id="apiGrid"></div></div>
+ <div class="panel"><div class="panel-head"><div class="panel-title">Nguyên tắc tích hợp</div></div><div class="integration-notes"><div><b>01. Xác thực</b><p>Sử dụng cơ chế xác thực do nhà cung cấp quy định. Không nhập hoặc lưu API Key thật trong prototype này.</p></div><div><b>02. Gửi request</b><p>Backend gửi request đến endpoint tương ứng và kiểm tra mã phản hồi.</p></div><div><b>03. Xử lý lỗi</b><p>Ghi log, kiểm tra trạng thái và chỉ thử lại theo chính sách phù hợp để tránh xử lý trùng lặp.</p></div></div></div>
+</section>
+
+<section class="view" id="view-notifications">
+ <div class="crumb">Trang chủ / Thông báo</div>
+ <div class="page-heading"><div><h1>Trung tâm thông báo</h1><p>Quản lý thông báo trạng thái đơn hàng và theo dõi lịch sử gửi mẫu.</p></div><div class="heading-actions"><button class="btn outline" onclick="markAllNotificationsRead()">✓ Đánh dấu đã đọc tất cả</button></div></div>
+ <div class="kpis three-kpis">
+  <div class="kpi"><div class="kpi-top">Tổng thông báo <span class="kpi-icon">🔔</span></div><div class="kpi-num" id="notificationTotal">04</div><div class="kpi-foot">Thông báo được lưu trong demo</div></div>
+  <div class="kpi"><div class="kpi-top">Chưa đọc <span class="kpi-icon">●</span></div><div class="kpi-num" id="notificationUnread">03</div><div class="kpi-foot">Cần quản trị viên xem</div></div>
+  <div class="kpi"><div class="kpi-top">Gửi thành công (mẫu) <span class="kpi-icon">✓</span></div><div class="kpi-num" id="notificationSent">04</div><div class="kpi-foot">Không phải gửi qua FCM thật</div></div>
+ </div>
+ <div class="notification-layout">
+  <div class="panel"><div class="panel-head"><div class="panel-title">Hộp thư thông báo</div><div class="notification-filters"><button class="filter-chip active" onclick="setNotificationFilter('all',this)">Tất cả</button><button class="filter-chip" onclick="setNotificationFilter('unread',this)">Chưa đọc</button></div></div><div class="notification-list" id="notificationList"></div></div>
+  <div class="panel"><div class="panel-head"><div class="panel-title">Tạo thông báo thử nghiệm</div><span class="status sim">FCM MOCK</span></div><form id="notificationForm" onsubmit="sendTestNotification(event)"><div class="field-block"><label for="notifyType">Loại thông báo</label><select id="notifyType" required><option value="Cập nhật đơn hàng">Cập nhật đơn hàng</option><option value="Thanh toán">Thanh toán</option><option value="Vận chuyển">Vận chuyển</option><option value="Cảnh báo hệ thống">Cảnh báo hệ thống</option></select></div><div class="field-block"><label for="notifyRecipient">Người nhận</label><input id="notifyRecipient" value="Nguyễn Minh An" required maxlength="60"></div><div class="field-block"><label for="notifyContent">Nội dung</label><textarea id="notifyContent" rows="4" placeholder="Nhập nội dung thông báo..." required maxlength="240"></textarea></div><button class="btn primary full-btn" type="submit">➤ Gửi thông báo thử nghiệm</button><div id="notificationFeedback" class="inline-feedback">Thông báo chỉ được thêm vào hộp thư mẫu, không gửi đến thiết bị thật.</div></form></div>
+ </div>
+ <div class="footer">NetShop • Prototype minh họa môn Mạng máy tính • Chỉ sử dụng dữ liệu giả lập</div>
+</section>
+
+<div class="modal-backdrop" id="orderModal" onclick="closeOrderModal(event)"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle"><div class="modal-head"><div><div class="small">ORDER DETAIL</div><h2 id="orderModalTitle">Chi tiết đơn hàng</h2></div><button class="modal-close" onclick="closeOrderModal()">×</button></div><div id="orderModalBody"></div></div></div>
+<div class="modal-backdrop" id="apiModal" onclick="closeApiModal(event)"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="apiModalTitle"><div class="modal-head"><div><div class="small">API INTEGRATION</div><h2 id="apiModalTitle">Chi tiết dịch vụ</h2></div><button class="modal-close" onclick="closeApiModal()">×</button></div><div id="apiModalBody"></div></div></div>
 </main></div>
 <script>
 let scenario = 'low';
@@ -332,6 +434,248 @@ function toggleAutoRun() {
 }
 
 resetDemo(false);
+
+// ===== Workspace tabs and local demo data =====
+const workspaceTitles = {
+  overview: ['Tổng quan', 'Trang chủ / Tổng quan / Kiểm thử tích hợp'],
+  orders: ['Đơn hàng', 'Trang chủ / Đơn hàng'],
+  security: ['Bảo mật', 'Trang chủ / Bảo mật'],
+  apis: ['Tích hợp API', 'Trang chủ / Tích hợp API'],
+  notifications: ['Thông báo', 'Trang chủ / Thông báo']
+};
+
+let orders = [
+  {id:'NS-2026-001', customer:'Nguyễn Minh An', product:'Tai nghe Bluetooth', amount:890000, date:'14/11/2026', status:'Chờ xử lý', risk:'LOW'},
+  {id:'NS-2026-002', customer:'Trần Gia Hân', product:'Bàn phím cơ', amount:1250000, date:'13/11/2026', status:'Đang vận chuyển', risk:'LOW'},
+  {id:'NS-2026-003', customer:'Lê Quốc Bảo', product:'Chuột không dây', amount:450000, date:'13/11/2026', status:'Tạm giữ', risk:'HIGH'},
+  {id:'NS-2026-004', customer:'Phạm Ngọc Mai', product:'Webcam HD', amount:760000, date:'12/11/2026', status:'Hoàn tất', risk:'LOW'}
+];
+let securityEvents = [
+  {time:'08:20:14',component:'Cloudflare WAF',event:'Request POST /checkout được cho phép',level:'Thông tin'},
+  {time:'08:18:42',component:'Turnstile',event:'Token xác minh thành công (mock)',level:'Thông tin'},
+  {time:'08:15:09',component:'Risk Engine',event:'Đơn NS-2026-003 có Risk Score 72',level:'Cảnh báo'},
+  {time:'08:12:31',component:'Cloudflare WAF',event:'Request mẫu bị từ chối theo chính sách demo',level:'Cảnh báo'}
+];
+let monitoringEnabled = true;
+let securityFilterCleared = false;
+let apiServices = [
+  {id:'waf',name:'Cloudflare WAF',logo:'☁',cls:'waf',purpose:'Lọc request HTTP/HTTPS trước khi chuyển vào backend.',endpoint:'POST /checkout → WAF inspection',auth:'Cấu hình vùng DNS và quy tắc bảo vệ tại Cloudflare.',status:'Sẵn sàng mô phỏng',last:'Chưa kiểm tra'},
+  {id:'turnstile',name:'Cloudflare Turnstile',logo:'✓',cls:'ts',purpose:'Xác minh token người dùng trong quá trình checkout.',endpoint:'POST /siteverify',auth:'Site Key ở frontend và Secret Key ở backend (không nhập khóa thật tại đây).',status:'Sẵn sàng mô phỏng',last:'Chưa kiểm tra'},
+  {id:'gemini',name:'Google Gemini API',logo:'✦',cls:'gem',purpose:'Tư vấn sản phẩm và đề xuất mặt hàng phù hợp.',endpoint:'POST /v1beta/models/{model}:generateContent',auth:'Yêu cầu API Key được lưu an toàn ở backend.',status:'Chờ cấu hình',last:'Chưa kiểm tra'},
+  {id:'momo',name:'MoMo Payment API',logo:'m',cls:'momo',purpose:'Tạo yêu cầu thanh toán và đối soát trạng thái giao dịch.',endpoint:'POST /v2/gateway/api/create',auth:'Sử dụng thông tin tích hợp do MoMo cấp trong môi trường phù hợp.',status:'Sandbox mô phỏng',last:'Chưa kiểm tra'},
+  {id:'shopee',name:'Shopee Logistics API',logo:'S',cls:'shop',purpose:'Lấy thông tin vận chuyển, tạo và tra cứu vận đơn.',endpoint:'get_shipping_parameter → ship_order → get_tracking_info',auth:'Ứng dụng cần được cấp quyền và gian hàng ủy quyền.',status:'Sandbox mô phỏng',last:'Chưa kiểm tra'},
+  {id:'fcm',name:'Firebase Cloud Messaging',logo:'◆',cls:'fcm',purpose:'Gửi thông báo về trạng thái đơn hàng đến thiết bị người dùng.',endpoint:'POST /v1/projects/{project-id}/messages:send',auth:'Backend dùng thông tin xác thực dịch vụ Firebase.',status:'Sandbox mô phỏng',last:'Chưa kiểm tra'}
+];
+let notifications = [
+  {id:1,type:'Cập nhật đơn hàng',title:'Đơn hàng NS-2026-002 đang vận chuyển',body:'Đơn hàng của Trần Gia Hân đã được cập nhật trạng thái vận chuyển (dữ liệu mẫu).',recipient:'Trần Gia Hân',time:'08:22 · 14/11/2026',read:false,icon:'🚚'},
+  {id:2,type:'Cảnh báo hệ thống',title:'Đơn hàng NS-2026-003 cần kiểm tra',body:'Risk Score đạt 72/100. Hệ thống đã tạm giữ đơn và chờ quản trị viên xem xét.',recipient:'Quản trị viên',time:'08:15 · 14/11/2026',read:false,icon:'⚑'},
+  {id:3,type:'Thanh toán',title:'Đã ghi nhận kết quả thanh toán mẫu',body:'Giao dịch NS-2026-001 được mô phỏng thành công trong môi trường Sandbox.',recipient:'Nguyễn Minh An',time:'08:10 · 14/11/2026',read:false,icon:'💳'},
+  {id:4,type:'Cập nhật đơn hàng',title:'Đơn hàng NS-2026-004 đã hoàn tất',body:'Đơn hàng đã được đánh dấu hoàn tất trong dữ liệu kiểm thử.',recipient:'Phạm Ngọc Mai',time:'07:55 · 14/11/2026',read:true,icon:'✓'}
+];
+let notificationFilter = 'all';
+
+function switchView(viewName) {
+  if (!workspaceTitles[viewName]) return;
+  document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === `view-${viewName}`));
+  document.querySelectorAll('.nav[data-view]').forEach(nav => nav.classList.toggle('active', nav.dataset.view === viewName));
+  const title = workspaceTitles[viewName][0];
+  document.title = `NetShop | ${title}`;
+  if (viewName === 'orders') renderOrders();
+  if (viewName === 'security') renderSecurityEvents();
+  if (viewName === 'apis') renderApiServices();
+  if (viewName === 'notifications') renderNotifications();
+  updateNavCounters();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function formatMoney(value) { return new Intl.NumberFormat('vi-VN').format(value) + ' ₫'; }
+function statusClass(status) {
+  if (status === 'Hoàn tất') return 'st-done';
+  if (status === 'Đang vận chuyển') return 'st-shipping';
+  if (status === 'Tạm giữ') return 'st-hold';
+  if (status === 'Chờ giao hàng') return 'st-wait';
+  return 'st-pending';
+}
+function renderOrders() {
+  const search = (document.getElementById('orderSearch')?.value || '').trim().toLowerCase();
+  const filter = document.getElementById('orderStatusFilter')?.value || 'all';
+  const filtered = orders.filter(order => (filter === 'all' || order.status === filter) && `${order.id} ${order.customer} ${order.product}`.toLowerCase().includes(search));
+  const body = document.getElementById('ordersTableBody');
+  if (!body) return;
+  body.innerHTML = filtered.length ? filtered.map(order => `<tr><td><strong>${order.id}</strong></td><td>${order.customer}</td><td>${order.product}</td><td>${formatMoney(order.amount)}</td><td>${order.date}</td><td><span class="status-pill ${statusClass(order.status)}">${order.status}</span></td><td><button class="row-action" onclick="showOrderDetail('${order.id}')">Chi tiết →</button></td></tr>`).join('') : '<tr><td colspan="7"><div class="empty-state">Không tìm thấy đơn hàng phù hợp.</div></td></tr>';
+  document.getElementById('ordersResultCount').textContent = `Hiển thị ${filtered.length}/${orders.length} đơn hàng`;
+  document.getElementById('ordersTotal').textContent = String(orders.length).padStart(2,'0');
+  document.getElementById('ordersPending').textContent = orders.filter(o=>o.status==='Chờ xử lý').length;
+  document.getElementById('ordersShipping').textContent = orders.filter(o=>o.status==='Đang vận chuyển').length;
+  document.getElementById('ordersHold').textContent = orders.filter(o=>o.status==='Tạm giữ').length;
+}
+function updateNavCounters() {
+  const orderCount = document.getElementById('navOrderCount');
+  const unreadCount = document.getElementById('navUnreadCount');
+  if (orderCount) orderCount.textContent = String(orders.length).padStart(2,'0');
+  if (unreadCount) unreadCount.textContent = notifications.filter(n=>!n.read).length;
+  const total = document.getElementById('notificationTotal');
+  const unread = document.getElementById('notificationUnread');
+  const sent = document.getElementById('notificationSent');
+  if (total) total.textContent = String(notifications.length).padStart(2,'0');
+  if (unread) unread.textContent = notifications.filter(n=>!n.read).length;
+  if (sent) sent.textContent = notifications.length;
+}
+function showOrderDetail(id) {
+  const order = orders.find(item=>item.id===id);
+  if (!order) return;
+  document.getElementById('orderModalTitle').textContent = `Đơn hàng ${order.id}`;
+  document.getElementById('orderModalBody').innerHTML = `<div class="detail-grid"><div class="detail-cell"><span>Khách hàng</span><strong>${order.customer}</strong></div><div class="detail-cell"><span>Ngày tạo</span><strong>${order.date}</strong></div><div class="detail-cell"><span>Sản phẩm</span><strong>${order.product}</strong></div><div class="detail-cell"><span>Giá trị đơn</span><strong>${formatMoney(order.amount)}</strong></div><div class="detail-cell"><span>Trạng thái</span><strong>${order.status}</strong></div><div class="detail-cell"><span>Risk Score</span><strong>${order.risk}</strong></div></div><p class="modal-description">Đây là chi tiết của một đơn hàng mẫu. Các trạng thái và giao dịch không được đồng bộ với hệ thống thương mại điện tử thật.</p>`;
+  document.getElementById('orderModal').classList.add('show');
+}
+function closeOrderModal(event) {
+  if (!event || event.target.id === 'orderModal') document.getElementById('orderModal').classList.remove('show');
+}
+function addSampleOrder() {
+  const number = orders.length + 1;
+  const id = `NS-2026-${String(number).padStart(3,'0')}`;
+  orders.unshift({id,customer:'Khách hàng thử nghiệm',product:'Sản phẩm demo',amount:520000,date:'14/11/2026',status:'Chờ xử lý',risk:'LOW'});
+  renderOrders(); updateNavCounters();
+  alert(`Đã thêm ${id} vào danh sách dữ liệu mẫu.`);
+}
+function exportOrdersCSV() {
+  const rows = [['Mã đơn hàng','Khách hàng','Sản phẩm','Giá trị (VND)','Ngày tạo','Trạng thái','Risk Score'], ...orders.map(o=>[o.id,o.customer,o.product,o.amount,o.date,o.status,o.risk])];
+  const csv = '\uFEFF' + rows.map(row=>row.map(value=>`"${String(value).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href=url; link.download='NetShop_Danh_sach_don_hang.csv'; link.click(); URL.revokeObjectURL(url);
+}
+
+function renderSecurityEvents() {
+  const body = document.getElementById('securityEventsBody'); if (!body) return;
+  const list = securityFilterCleared ? securityEvents.slice(0,0) : securityEvents;
+  body.innerHTML = list.length ? list.map(event=>`<tr><td>${event.time}</td><td><strong>${event.component}</strong></td><td>${event.event}</td><td><span class="status-pill ${event.level==='Cảnh báo'?'st-hold':'st-done'}">${event.level}</span></td></tr>`).join('') : '<tr><td colspan="4"><div class="empty-state">Không có sự kiện đang hiển thị.</div></td></tr>';
+  document.getElementById('securityAlertCount').textContent = securityEvents.filter(e=>e.level==='Cảnh báo').length;
+}
+function toggleMonitoring() {
+  monitoringEnabled = !monitoringEnabled;
+  const state = document.getElementById('monitorState');
+  state.classList.toggle('paused',!monitoringEnabled);
+  state.innerHTML = `<span class="pulse-dot"></span> ${monitoringEnabled?'Đang giám sát':'Đã tạm dừng'}`;
+  document.getElementById('monitorToggle').textContent = monitoringEnabled ? 'Tạm dừng giám sát' : 'Bật giám sát lại';
+}
+function addSecurityEvent(component,event,level='Thông tin') {
+  const time = new Date().toLocaleTimeString('vi-VN',{hour12:false});
+  securityEvents.unshift({time,component,event,level}); securityFilterCleared = false;
+  renderSecurityEvents();
+}
+function runSecurityCheck(component) {
+  if (!monitoringEnabled) { document.getElementById('securityFeedback').textContent='Giám sát đang tạm dừng. Hãy bật lại trước khi kiểm tra.'; return; }
+  document.getElementById('securityFeedback').textContent = `${component}: đang kiểm tra dữ liệu mẫu…`;
+  window.setTimeout(()=>{
+    const result = component==='WAF' ? 'Request kiểm thử được WAF cho phép (mock).' : 'Token thử nghiệm được xác minh thành công (mock).';
+    addSecurityEvent(component,result,'Thông tin');
+    document.getElementById('securityFeedback').textContent = `${component}: kiểm tra hoàn tất. Kết quả đã được thêm vào nhật ký.`;
+  },500);
+}
+function simulateSecurityAlert() {
+  addSecurityEvent('Risk Engine','Đơn thử nghiệm có Risk Score 72/100 và được chuyển sang trạng thái tạm giữ.','Cảnh báo');
+  document.getElementById('securityFeedback').textContent='Đã tạo cảnh báo rủi ro mẫu và thêm vào nhật ký bảo mật.';
+}
+function clearSecurityEvents() {
+  securityFilterCleared = !securityFilterCleared;
+  const button = document.querySelector('#view-security .text-button');
+  if (button) button.textContent = securityFilterCleared ? 'Hiện lại nhật ký' : 'Ẩn nhật ký';
+  renderSecurityEvents();
+}
+
+function renderApiServices() {
+  const grid = document.getElementById('apiGrid'); if (!grid) return;
+  grid.innerHTML = apiServices.map(service=>`<div class="api-card ${service.cls}"><div class="api-card-top"><div class="service-logo ${service.cls}">${service.logo}</div><div style="flex:1"><strong>${service.name}</strong><div><span class="status ${service.status==='Sẵn sàng mô phỏng'?'ok':'sim'}">● ${service.status}</span></div></div></div><p>${service.purpose}</p><div class="api-meta"><span>Lần kiểm tra: ${service.last}</span><span>DEMO</span></div><div class="api-actions"><button class="btn outline" onclick="checkApi('${service.id}')">Kiểm tra</button><button class="btn outline" onclick="showApiDetail('${service.id}')">Chi tiết</button></div></div>`).join('');
+  document.getElementById('apiReadyCount').textContent = apiServices.filter(s=>s.status!=='Lỗi mô phỏng').length;
+}
+function checkApi(id) {
+  const service = apiServices.find(item=>item.id===id); if (!service) return;
+  service.status = 'Đang kiểm tra'; renderApiServices();
+  window.setTimeout(()=>{
+    service.status = 'Đạt kiểm tra demo'; service.last = new Date().toLocaleTimeString('vi-VN',{hour12:false});
+    document.getElementById('apiLastCheck').textContent = service.last;
+    renderApiServices();
+  },550);
+}
+function checkAllApis() {
+  const button = document.getElementById('checkAllApisBtn'); button.disabled=true; button.textContent='Đang kiểm tra…';
+  apiServices.forEach((service,index)=>{
+    service.status='Đang kiểm tra';
+    window.setTimeout(()=>{
+      service.status='Đạt kiểm tra demo'; service.last=new Date().toLocaleTimeString('vi-VN',{hour12:false});
+      renderApiServices();
+      if (index===apiServices.length-1) {button.disabled=false;button.textContent='⟳ Kiểm tra tất cả';document.getElementById('apiLastCheck').textContent=service.last;}
+    },350+index*180);
+  });
+  renderApiServices();
+}
+function showApiDetail(id) {
+  const service = apiServices.find(item=>item.id===id); if (!service) return;
+  document.getElementById('apiModalTitle').textContent=service.name;
+  document.getElementById('apiModalBody').innerHTML=`<p class="modal-description">${service.purpose}</p><div class="detail-cell"><span>Trạng thái</span><strong>${service.status}</strong></div><p class="modal-description"><b>Endpoint / thao tác minh họa</b></p><div class="endpoint">${service.endpoint}</div><p class="modal-description"><b>Yêu cầu tích hợp</b><br>${service.auth}</p><p class="modal-description">Trạng thái trên chỉ phản ánh kiểm tra giả lập tại giao diện, không chứng minh dịch vụ bên ngoài đang kết nối thật.</p>`;
+  document.getElementById('apiModal').classList.add('show');
+}
+function closeApiModal(event) {
+  if (!event || event.target.id === 'apiModal') document.getElementById('apiModal').classList.remove('show');
+}
+
+function renderNotifications() {
+  const list = document.getElementById('notificationList'); if (!list) return;
+  const filtered = notifications.filter(item=>notificationFilter==='all' || !item.read);
+  list.innerHTML = filtered.length ? filtered.map(item=>`<div class="notification-item ${item.read?'':'unread'}" onclick="openNotification(${item.id})"><div class="notification-symbol">${item.icon}</div><div class="notification-copy"><strong>${item.title}</strong><p>${item.body}</p><small>${item.recipient} · ${item.time}</small></div>${item.read?'':'<span class="unread-dot"></span>'}</div>`).join('') : '<div class="empty-state">Không có thông báo trong mục này.</div>';
+  updateNavCounters();
+}
+function setNotificationFilter(filter,button) {
+  notificationFilter=filter;
+  document.querySelectorAll('.filter-chip').forEach(chip=>chip.classList.remove('active'));
+  button.classList.add('active'); renderNotifications();
+}
+function openNotification(id) {
+  const item=notifications.find(n=>n.id===id); if (!item) return;
+  item.read=true; renderNotifications();
+  document.getElementById('notificationFeedback').textContent=`Đã mở thông báo “${item.title}” và đánh dấu là đã đọc.`;
+}
+function markAllNotificationsRead() {
+  notifications.forEach(item=>item.read=true); renderNotifications();
+  const feedback=document.getElementById('notificationFeedback'); if(feedback) feedback.textContent='Tất cả thông báo đã được đánh dấu là đã đọc.';
+}
+function sendTestNotification(event) {
+  event.preventDefault();
+  const type=document.getElementById('notifyType').value;
+  const recipient=document.getElementById('notifyRecipient').value.trim();
+  const content=document.getElementById('notifyContent').value.trim();
+  if(!recipient || !content) return;
+  const now=new Date();
+  const time=now.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})+' · '+now.toLocaleDateString('vi-VN');
+  const icon=type==='Thanh toán'?'💳':type==='Vận chuyển'?'🚚':type==='Cảnh báo hệ thống'?'⚑':'🔔';
+  notifications.unshift({id:Date.now(),type,title:`${type}: thông báo thử nghiệm`,body:content,recipient,time,read:false,icon});
+  document.getElementById('notificationForm').reset();
+  document.getElementById('notifyRecipient').value=recipient;
+  document.getElementById('notificationFeedback').textContent='Đã thêm thông báo vào hộp thư mẫu. Không có tin nhắn nào được gửi đến thiết bị thật.';
+  notificationFilter='all';
+  document.querySelectorAll('.filter-chip').forEach(chip=>chip.classList.toggle('active',chip.textContent.trim()==='Tất cả'));
+  renderNotifications();
+}
+
+// Connect workflow results to the sample order list.
+const originalFinishWorkflow = finishWorkflow;
+finishWorkflow = function() {
+  originalFinishWorkflow();
+  const demoOrder = orders.find(order=>order.id==='NS-2026-001');
+  if (demoOrder) {
+    demoOrder.status = scenario==='low' ? 'Chờ giao hàng' : 'Tạm giữ';
+    demoOrder.risk = scenario==='low' ? 'LOW' : 'HIGH';
+    renderOrders();
+  }
+};
+
+// Initial render for the functional workspace sections.
+renderOrders();
+renderSecurityEvents();
+renderApiServices();
+renderNotifications();
+updateNavCounters();
+
 </script>
 </body>
 </html>
