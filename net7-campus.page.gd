@@ -1,5 +1,3 @@
-Lab2 - Web giới thiệu đồ án
-https://net7-campus.page.gd/
 <!doctype html>
 <html lang="vi">
 <head>
