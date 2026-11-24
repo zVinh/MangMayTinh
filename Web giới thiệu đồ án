@@ -1,2 +1,1374 @@
 Lab2 - Web giới thiệu đồ án
 https://net7-campus.page.gd/
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Net7 × iSMART — Thiết kế &amp; triển khai mô hình mạng an toàn cho doanh nghiệp giáo dục tại Việt Nam</title>
+<meta name="description" content="Đồ án Mạng máy tính Nhóm 07 (Khoa CNTTKD – UEH): Thiết kế &amp; triển khai mô hình mạng an toàn cho doanh nghiệp giáo dục tại Việt Nam — iSMART Education (VLSM, OSPF Multi-Area, GRE-over-IPSec, Kids Mode &amp; Local Cache).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b12;
+  --ink:#e9f1f4;
+  --mut:#8da3ae;
+  --acc:#d4f175;
+  --t:#5eead4;
+  --v:#a78bfa;
+  --org:#fb923c;
+  --err:#f87171;
+  --card:rgba(14,22,34,.58);
+  --card-hi:rgba(20,32,48,.76);
+  --line:rgba(255,255,255,.11);
+  --line-hi:rgba(212,241,117,.45);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{
+  font:400 15.5px/1.65 'Be Vietnam Pro',system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.scroll-bar{
+  position:fixed;top:0;left:0;height:2.5px;width:0;z-index:30;
+  background:linear-gradient(90deg,var(--t),var(--acc));
+  pointer-events:none;transition:width .08s linear;
+}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;transition:opacity .25s ease}
+#tags{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.tag{
+  position:absolute;left:0;top:0;
+  display:inline-flex;align-items:center;gap:6px;
+  font:600 11.5px/1 'JetBrains Mono',ui-monospace,monospace;
+  padding:5px 10px;border-radius:99px;
+  background:rgba(7,11,18,.78);
+  border:1px solid var(--line);
+  backdrop-filter:blur(8px);
+  color:#eaf6f8;white-space:nowrap;
+  transition:opacity .25s ease;
+}
+.tag i{width:6px;height:6px;border-radius:50%;display:inline-block}
+.tag.island{font-size:10.5px;padding:4px 8px;border-color:rgba(94,234,212,.34);color:#bff3eb}
+.tag.active{border-color:var(--acc);color:#fff;background:rgba(12,24,36,.92);box-shadow:0 4px 16px rgba(212,241,117,.22)}
+
+/* Top Navigation */
+nav{
+  position:sticky;top:0;z-index:20;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:12px max(18px,5vw);
+  background:rgba(7,11,18,.68);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  display:inline-flex;align-items:center;gap:9px;
+  font-weight:800;letter-spacing:.06em;text-decoration:none;color:var(--ink);white-space:nowrap;
+}
+.brand-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:linear-gradient(135deg,var(--t),var(--acc));
+  box-shadow:0 0 10px rgba(94,234,212,.7);
+}
+.brand i{color:var(--acc);font-style:normal}
+.nav-links{display:flex;align-items:center;flex-wrap:wrap;gap:6px 18px}
+.nav-links a{
+  color:var(--mut);text-decoration:none;font-size:13.5px;font-weight:600;
+  transition:color .2s;white-space:nowrap;position:relative;padding:4px 0;
+}
+.nav-links a:hover,.nav-links a:focus-visible,.nav-links a.active{color:var(--acc)}
+.nav-links a.active:after{
+  content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;
+  background:var(--acc);border-radius:2px;
+}
+.nav-cta{
+  padding:6px 14px!important;border-radius:99px;
+  background:rgba(212,241,117,.12);border:1px solid rgba(212,241,117,.38);
+  color:var(--acc)!important;
+}
+.nav-cta:hover{background:var(--acc);color:#0f1d09!important}
+.nav-cta.active:after{display:none}
+
+main{position:relative;z-index:1}
+section{max-width:1200px;margin:auto;padding:74px max(18px,5vw);scroll-margin-top:64px}
+
+/* Minimal, Modern Hero (like index (1).html) */
+.hero{
+  min-height:calc(100vh - 54px);
+  display:flex;flex-direction:column;justify-content:center;gap:20px;
+  padding-top:36px;padding-bottom:48px;position:relative;
+}
+.hero:before{
+  content:"";position:absolute;inset:0 auto 0 -60px;width:min(640px,100%);
+  background:radial-gradient(ellipse at 32% 50%,rgba(7,11,18,.78) 0%,rgba(7,11,18,.42) 56%,transparent 84%);
+  pointer-events:none;z-index:-1;
+}
+.hero>*{max-width:575px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;width:fit-content;
+  font:700 11px/1 'JetBrains Mono',ui-monospace,monospace;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--acc);
+  padding:6px 12px;border-radius:99px;
+  background:rgba(212,241,117,.08);border:1px solid rgba(212,241,117,.24);
+}
+.eyebrow:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--t);box-shadow:0 0 8px var(--t)}
+h1{
+  font-size:clamp(28px,3.6vw,44px);line-height:1.14;font-weight:800;letter-spacing:-.025em;
+  background:linear-gradient(125deg,#fff 14%,var(--t) 60%,var(--acc) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+h2{font-size:clamp(24px,3.2vw,36px);font-weight:800;line-height:1.2;letter-spacing:-.02em;margin:8px 0 10px}
+h3{font-size:17px;font-weight:700;line-height:1.35}
+.lead{color:var(--mut);max-width:740px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  font:600 13px/1.1 inherit;color:var(--ink);
+  background:rgba(14,22,34,.72);border:1px solid var(--line);
+  border-radius:99px;padding:8px 14px;cursor:pointer;transition:.18s;
+  backdrop-filter:blur(10px);min-height:36px;
+}
+.chip:hover,.chip[aria-pressed=true]{background:var(--acc);color:#10200a;border-color:var(--acc)}
+.chip.warn[aria-pressed=true]{background:var(--org);color:#1a0a02;border-color:var(--org)}
+
+#info{
+  min-height:48px;font-size:13.5px;color:#cde4ea;line-height:1.55;
+  padding:11px 14px;border-radius:13px;
+  background:rgba(10,17,29,.76);border:1px solid var(--line);
+  border-left:3px solid var(--t);backdrop-filter:blur(12px);
+}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:2px}
+.stats div{
+  padding:12px 13px;border-radius:14px;
+  background:rgba(13,22,36,.72);border:1px solid var(--line);backdrop-filter:blur(12px);
+}
+.stats b{display:block;font:800 22px/1.15 'JetBrains Mono',monospace;color:var(--acc)}
+.stats span{display:block;font-size:11.5px;color:var(--mut);margin-top:3px;line-height:1.35}
+
+/* Grids & Glass Cards */
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-top:24px}
+.grid-3{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:24px}
+.grid-4{display:grid;gap:14px;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:16px}
+.card{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:18px;padding:22px;backdrop-filter:blur(12px);
+  transition:transform .2s,border-color .2s,background .2s,opacity .6s;
+}
+.card:hover{border-color:var(--line-hi);background:var(--card-hi)}
+.card h3{margin-bottom:6px}
+.card p{color:var(--mut);font-size:13.8px}
+.card small{display:block;color:var(--acc);font-size:11.5px;margin:2px 0 8px;font-family:'JetBrains Mono',monospace}
+.pill{
+  display:inline-block;font:700 11px/1 'JetBrains Mono',monospace;
+  padding:4px 10px;border-radius:99px;border:1px solid var(--line);
+  margin:0 6px 10px 0;letter-spacing:.03em;
+}
+.compact-list{list-style:none;padding:0;margin-top:10px;display:grid;gap:6px}
+.compact-list li{font-size:13.2px;color:#c9dde4;padding-left:14px;position:relative}
+.compact-list li:before{content:"›";position:absolute;left:0;color:var(--t);font-weight:800}
+.compact-list li b{color:var(--ink)}
+
+.proto-strip{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.proto-strip span{
+  font:600 11.5px 'JetBrains Mono',monospace;
+  padding:5px 11px;border-radius:99px;
+  background:rgba(94,234,212,.07);border:1px solid rgba(94,234,212,.22);
+  color:#b6f4ea;
+}
+
+/* Panels & Tables */
+.panel{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:20px;padding:22px;backdrop-filter:blur(14px);margin-top:20px;
+}
+.grid .panel{margin-top:0}
+.panel h3{margin-bottom:10px;font-size:16.5px}
+.big{font:800 26px/1.15 'JetBrains Mono',monospace;color:var(--acc);margin:10px 0 4px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 12px}
+.bar{
+  display:flex;height:32px;border-radius:10px;overflow:hidden;border:1px solid var(--line);
+  background:repeating-linear-gradient(45deg,#ffffff0d 0 6px,transparent 6px 12px);
+}
+.bar i{display:block;height:100%;border-right:2px solid var(--bg);transition:filter .2s;cursor:pointer}
+.bar i:hover{filter:brightness(1.25)}
+.tw{overflow-x:auto;margin-top:12px;border:1px solid var(--line);border-radius:15px;background:var(--card);backdrop-filter:blur(12px)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.5px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{font:700 11px 'JetBrains Mono',monospace;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+tr:last-child td{border:0}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(212,241,117,.06)}
+code{font:12.5px 'JetBrains Mono',ui-monospace,monospace;color:var(--t)}
+code.copyable{cursor:pointer;border-bottom:1px dashed rgba(94,234,212,.45);padding:1px 3px;border-radius:4px}
+code.copyable:hover{background:rgba(94,234,212,.14);color:#fff}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px}
+#used{font-size:13px;color:var(--mut);margin-top:8px}
+
+/* Topology SVG */
+#topo-svg{width:100%;height:auto;display:block}
+.sbox{cursor:pointer}.sbox rect{transition:filter .2s,stroke-width .2s}
+.sbox:hover rect,.sbox:focus-visible rect{filter:brightness(1.14);stroke-width:3}
+#topo-svg text{font-family:inherit}
+
+/* Wi-Fi Roaming */
+.corr{
+  position:relative;height:62px;border:1px solid var(--line);border-radius:14px;margin-bottom:14px;
+  background:linear-gradient(90deg,#5eead420,#a78bfa20,#d4f17520);
+}
+.corr i{
+  position:absolute;top:0;width:33.3%;height:100%;border-right:2px dashed var(--line);
+  font:600 12px/62px inherit;text-align:center;font-style:normal;color:var(--mut);
+}
+.corr i:last-of-type{border-right:0}
+.corr b{
+  position:absolute;top:17px;width:28px;height:28px;border-radius:50%;
+  background:var(--acc);box-shadow:0 0 16px rgba(212,241,117,.65);
+  transform:translateX(-50%);transition:left .08s;
+}
+input[type=range]{width:100%;accent-color:#d4f175;cursor:pointer}
+.sw{display:inline-flex;align-items:center;gap:8px;margin:12px 0;color:#cbe0e8;font-size:14px;cursor:pointer}
+.wr{display:grid;gap:9px}
+.ap{display:grid;grid-template-columns:165px 1fr 74px;gap:10px;align-items:center;font-size:13px}
+.ap-track{position:relative;height:10px;border-radius:9px;background:#ffffff14;overflow:hidden}
+.ap-track i{display:block;height:100%;background:var(--t);transition:width .1s}
+.ap-track:after{
+  content:"";position:absolute;top:0;bottom:0;left:46%;width:2px;
+  background:rgba(251,146,60,.8);pointer-events:none;
+}
+.ap.on{color:var(--acc);font-weight:600}.ap.on .ap-track i{background:var(--acc)}
+
+/* ACL Simulator */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+select,input[type=number],input:not([type]){
+  width:100%;font:inherit;font-size:14px;color:var(--ink);
+  background:#0c1420;border:1px solid var(--line);border-radius:12px;padding:10px 12px;
+}
+.route{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0;font-size:13px}
+.route span{background:#ffffff12;border-radius:10px;padding:6px 12px}
+.route b{color:var(--acc);font-family:'JetBrains Mono',monospace}
+.out{
+  white-space:pre-wrap;font:13px/1.6 'JetBrains Mono',ui-monospace,monospace;
+  background:#05090f;border:1px solid var(--line);border-left:4px solid var(--acc);
+  border-radius:12px;padding:13px 14px;margin:12px 0;min-height:58px;color:#d6f5ee;
+}
+.out.den{border-left-color:var(--err);color:#fecaca}
+#mt{margin-top:14px}#mt table{min-width:0;font-size:12px}#mt td{cursor:pointer;text-align:center;padding:8px;font-family:'JetBrains Mono',monospace}
+.ok{background:#d4f17526;color:#e3f8a0}.no{background:#f8717130;color:#fecaca}
+
+/* Kids Mode 2-Column Single-App Kiosk + 50 Tablet Grid */
+.kc{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.kc label{color:var(--mut);font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.kc input{width:130px}
+.kids-layout{display:grid;grid-template-columns:270px 1fr;gap:20px;align-items:start;margin-top:16px}
+.tablet-frame{
+  background:#070d16;border:2px solid rgba(148,185,204,.26);border-radius:22px;
+  padding:11px;box-shadow:0 16px 36px rgba(0,0,0,.42);display:flex;flex-direction:column;gap:9px;
+}
+.tablet-topbar{display:flex;justify-content:space-between;align-items:center;font:600 10.5px/1 'JetBrains Mono',monospace;color:var(--mut);padding:2px 4px}
+.tablet-topbar b{color:var(--t)}
+.tablet-screen{
+  position:relative;min-height:244px;border-radius:15px;padding:16px 14px;
+  background:radial-gradient(circle at 50% 28%,rgba(22,68,86,.42),rgba(7,15,26,.96));
+  border:1px solid rgba(94,234,212,.22);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:11px;overflow:hidden;
+}
+.kiosk-pill{
+  position:absolute;top:10px;left:10px;right:10px;
+  font:700 9.5px/1.2 'JetBrains Mono',monospace;color:var(--acc);
+  background:rgba(212,241,117,.1);border:1px solid rgba(212,241,117,.26);
+  padding:5px 8px;border-radius:99px;
+}
+.app-only-btn{
+  margin-top:18px;width:82px;height:82px;border-radius:18px;cursor:pointer;
+  background:linear-gradient(145deg,#0f6b78,#0a3d4d);border:1.5px solid var(--t);color:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  box-shadow:0 10px 22px rgba(15,107,120,.32);transition:transform .18s;
+}
+.app-only-btn:hover{transform:translateY(-2px)}
+.app-only-btn span{font-size:25px;line-height:1}
+.app-only-btn strong{font:800 11.5px/1 'JetBrains Mono',monospace;color:var(--acc)}
+.kiosk-empty-note{font-size:11.5px;color:var(--mut);line-height:1.45;max-width:205px}
+.exit-kiosk-btn{
+  width:100%;font:600 11.5px 'JetBrains Mono',monospace;color:var(--mut);
+  background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;
+  padding:7px 10px;cursor:pointer;transition:.18s;
+}
+.exit-kiosk-btn:hover{border-color:var(--org);color:#fed7aa}
+.tablet-overlay{
+  position:absolute;inset:0;padding:16px;background:rgba(5,10,18,.94);backdrop-filter:blur(4px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;
+}
+.tablet-overlay.show{display:flex}
+.tablet-overlay.pin{background:rgba(18,10,14,.95);border:1.5px solid var(--err)}
+.tablet-overlay strong{font-size:12.5px;color:var(--acc)}
+.tablet-overlay.pin strong{color:#fca5a5}
+.tablet-overlay small{font-size:11.5px;color:var(--mut);line-height:1.42}
+.kt{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:0 0 12px}
+.kt i{
+  aspect-ratio:3/4;display:grid;place-items:center;font:600 11px inherit;font-style:normal;
+  border-radius:8px;background:#5eead422;border:1px solid rgba(94,234,212,.65);transition:.22s;cursor:pointer;
+}
+.kt i:hover{border-color:#fff}
+.kt i.sel{box-shadow:0 0 0 2px #fff}
+.kt i.lock{background:#f8717126;border-color:var(--err);color:#fecaca}
+.kt i.bad{animation:fl .55s 2;background:var(--err);color:#fff}
+@keyframes fl{50%{transform:scale(1.16)}}
+
+/* Wireshark */
+.ws-bar{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:8px 12px;border-radius:10px;background:#05090f;border:1px solid var(--line);
+  font:600 12px 'JetBrains Mono',monospace;color:var(--t);margin-bottom:10px;
+}
+.ws-bar span{color:var(--mut);font-weight:500}
+#wsp{word-break:break-all}
+
+/* Cost Controls */
+.f{display:block;color:var(--mut);font-size:13px;margin:10px 0}.f output{float:right;color:var(--ink);font-family:'JetBrains Mono',monospace}.f input{margin-top:6px}
+
+/* Compact 5-Stage Horizontal Roadmap (Tiến độ) */
+.roadmap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:22px}
+.step{
+  padding:16px 15px;border-radius:16px;background:var(--card);border:1px solid var(--line);
+  backdrop-filter:blur(12px);display:flex;flex-direction:column;justify-content:space-between;gap:8px;
+}
+.step-top{display:flex;justify-content:space-between;align-items:center;font:700 11px 'JetBrains Mono',monospace}
+.step-top b{color:var(--t)}.step-top span{color:var(--acc)}
+.step h3{font-size:14px;line-height:1.35}
+.step p{font-size:12.5px;color:var(--mut);line-height:1.5}
+
+/* Team Avatar */
+.av{
+  display:grid;place-items:center;width:44px;height:44px;border-radius:13px;
+  background:linear-gradient(135deg,var(--t),var(--v));color:#07131c;font-weight:800;margin-bottom:10px;
+}
+
+/* Contact Section (matching 2-column academic card layout) */
+.contact-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:20px;margin-top:24px;align-items:stretch}
+.contact-stack{display:grid;gap:12px}
+.contact-item{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:16px 18px;border-radius:16px;
+  background:rgba(6,12,22,.66);border:1px solid var(--line);
+  transition:border-color .2s;
+}
+.contact-item:hover{border-color:rgba(94,234,212,.32)}
+.contact-ico{
+  width:40px;height:40px;border-radius:11px;flex:none;display:grid;place-items:center;
+  background:rgba(94,234,212,.12);border:1px solid rgba(94,234,212,.3);
+  color:var(--t);font-weight:800;font-size:16px;
+}
+.contact-item b{display:block;font-size:14.5px;margin-bottom:3px;color:var(--ink)}
+.contact-item p{font-size:13.5px;color:var(--mut);line-height:1.58}
+.contact-right{display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.contact-actions{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:18px}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  font:700 13.5px inherit;padding:11px 20px;border-radius:99px;cursor:pointer;border:0;transition:.18s;
+}
+.btn-cta.pri{background:var(--acc);color:#0f1d09}
+.btn-cta.pri:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.btn-cta.sec{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line)}
+.btn-cta.sec:hover{border-color:var(--t);color:var(--t)}
+.copy-inline{font:600 12px 'JetBrains Mono',monospace;color:var(--acc);min-height:18px;margin-top:8px}
+.contact-note{font-size:12px;color:var(--mut);border-top:1px solid var(--line);padding-top:14px;line-height:1.6}
+
+footer{
+  position:relative;z-index:1;text-align:center;
+  border-top:1px solid var(--line);
+  background:rgba(5,9,16,.8);backdrop-filter:blur(12px);
+  padding:26px max(18px,5vw) 36px;font-size:13px;color:var(--mut);
+}
+
+.toast{
+  position:fixed;right:20px;bottom:20px;z-index:40;
+  padding:10px 15px;border-radius:11px;background:rgba(7,14,24,.94);
+  border:1px solid var(--acc);color:var(--ink);
+  font:600 12.5px 'JetBrains Mono',monospace;
+  box-shadow:0 12px 30px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s ease;
+}
+.toast.show{opacity:1;transform:none}
+
+.reveal{opacity:0;transform:translateY(20px)}
+.reveal.in{opacity:1;transform:none;transition:opacity .6s,transform .6s}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+
+@media(max-width:1024px){
+  .roadmap{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .grid-3,.kids-layout,.contact-grid{grid-template-columns:1fr}
+  .tablet-frame{max-width:320px;margin:auto}
+}
+@media(max-width:860px){
+  .hero>*{max-width:none}
+  nav{flex-wrap:wrap;gap:8px 12px;padding:10px 16px}
+  .nav-links{gap:6px 14px}
+  .nav-links a{font-size:12.5px}
+}
+@media(max-width:700px){
+  section{padding:56px 16px}
+  .roadmap,.grid-4,.two{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kt{grid-template-columns:repeat(5,1fr)}
+  .ap{grid-template-columns:110px 1fr 60px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="scroll-bar" id="sbar" aria-hidden="true"></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="tags" aria-hidden="true"></div>
+
+<nav aria-label="Điều hướng chính">
+  <a class="brand" href="#top"><span class="brand-dot" aria-hidden="true"></span>NET<i>7</i> × iSMART</a>
+  <div class="nav-links">
+    <a href="#tong-quan">Tổng quan</a>
+    <a href="#topo">Topology</a>
+    <a href="#vlsm">VLSM</a>
+    <a href="#wifi">Wi-Fi</a>
+    <a href="#acl">ACL &amp; Kids</a>
+    <a href="#chiphi">Chi phí</a>
+    <a href="#doi-ngu">Đội ngũ</a>
+    <a href="#tien-do">Tiến độ</a>
+    <a class="nav-cta" href="#lien-he">Liên hệ</a>
+  </div>
+</nav>
+
+<main id="top">
+  <!-- HERO UI GIỐNG MẪU NHƯNG ÍT CHỮ, GỌN GÀNG -->
+  <section class="hero">
+    <span class="eyebrow">Đồ án Mạng máy tính · Nhóm 07 · Khoa CNTTKD – UEH</span>
+    <h1>Thiết kế &amp; triển khai mô hình mạng an toàn cho doanh nghiệp giáo dục tại Việt Nam</h1>
+    <p class="lead">Hạ tầng <strong>iCLASS &amp; iDIGI</strong> (iSMART Education) trên 3 miền — <code>VLSM</code>, <code>OSPF Multi-Area</code>, <code>GRE-over-IPSec</code> và <code>Local Cache</code> tự chủ khi đứt cáp.</p>
+    <div class="chips" id="globe-ctrl" role="group" aria-label="Chọn khu vực trên quả cầu 3D">
+      <button class="chip" data-k="all" aria-pressed="true">🌐 Toàn cảnh</button>
+      <button class="chip" data-k="hcm" aria-pressed="false">TP.HCM · HQ</button>
+      <button class="chip" data-k="hue" aria-pressed="false">Huế · Area 30</button>
+      <button class="chip" data-k="hn" aria-pressed="false">Hà Nội · Area 20</button>
+      <button class="chip warn" id="wan-sim" aria-pressed="false">⚡ Thử đứt cáp WAN</button>
+    </div>
+    <p id="info" aria-live="polite"></p>
+    <div class="stats">
+      <div><b>31</b><span>Mạng con VLSM</span></div>
+      <div><b>61</b><span>Thiết bị Lab</span></div>
+      <div><b>22/22</b><span>Test case đạt</span></div>
+      <div><b>~1 ms</b><span>Độ trễ LAN</span></div>
+    </div>
+  </section>
+
+  <!-- TỔNG QUAN SÚC TÍCH: BÀI TOÁN · MỤC TIÊU · GIẢI PHÁP · TÍNH NĂNG -->
+  <section id="tong-quan">
+    <span class="eyebrow">Bài toán · Mục tiêu · Giải pháp kỹ thuật</span>
+    <h2>Chuẩn hóa hạ tầng lớp học số iCLASS &amp; iDIGI trên 3 miền</h2>
+    <p class="lead">Giải quyết bài toán mạng phẳng dân dụng, tấn công mạng và sự cố đứt cáp quang biển (AAG/APG) tại Việt Nam bằng mô hình mẫu 3 khu vực (TP.HCM · Hà Nội · Huế) — mỗi miền cấp 1 khối <code>/16</code> và 1 OSPF Area gộp tuyến về Area 0.</p>
+
+    <div class="grid-3">
+      <article class="card reveal">
+        <span class="pill" style="color:var(--org)">BỐI CẢNH &amp; BÀI TOÁN TẠI VN</span>
+        <h3>Điểm nghẽn mạng phẳng tại trường học</h3>
+        <ul class="compact-list">
+          <li><b>Modem FPT AC1000C V2:</b> Quá tải khi ~50 tablet cùng nhập <code>Access Code</code>, thiếu VLAN 802.1Q.</li>
+          <li><b>3 phòng iCLASS liền kề:</b> Tắt điện phòng giữa làm mất mạng 2 phòng bên; lỗi <i>Sticky Client</i> khi chuyển phòng.</li>
+          <li><b>7–8 phòng iDIGI:</b> Switch unmanaged thiếu Sticky MAC / DHCP Snooping dễ xung đột IP.</li>
+          <li><b>Đứt cáp WAN &amp; hỗ trợ rời rạc:</b> Không có Local Cache; IT hỗ trợ thiếu VPN và nhật ký.</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <span class="pill" style="color:var(--acc)">MỤC TIÊU &amp; CHỈ SỐ KIỂM CHỨNG</span>
+        <h3>Phòng thủ nhiều lớp &amp; tự chủ 100%</h3>
+        <ul class="compact-list">
+          <li><b>Độ trễ LAN &lt; 2 ms:</b> Thực đo lab ~1 ms từ 50 tablet tới Local Cache VLAN 50.</li>
+          <li><b>Dual WAN &lt; 10 giây:</b> Chuyển mạch FTTH sang 4G LTE qua OSPF Fast Timers.</li>
+          <li><b>Kids Mode + Session ID:</b> Màn hình chỉ hiện app iCLASS; khóa 50 máy qua WSS 443.</li>
+          <li><b>Tối ưu CAPEX thực tế:</b> ~63,73 tr/trường iCLASS &amp; ~47,66 tr/trường iDIGI (theo giá niêm yết T11/2026), Backup 3-2-1 &amp; Green PoE.</li>
+        </ul>
+      </article>
+
+      <article class="card reveal">
+        <span class="pill" style="color:var(--t)">TÍNH NĂNG CỐT LÕI</span>
+        <h3>6 phân hệ kỹ thuật tương tác</h3>
+        <ul class="compact-list">
+          <li><b>Local Cache VLAN 50:</b> Tự chạy DNS Split-Horizon, RADIUS, hàng đợi backup 2TB HDD.</li>
+          <li><b>Wi-Fi 6 Roaming 802.11k/v/r:</b> Min RSSI −72 dBm, kênh 1–6–11 / 36–44–149.</li>
+          <li><b>Bảo mật L2/L3:</b> Sticky MAC, DHCP Snooping, ACL 140/150/199, SSHv2 &amp; SNMP.</li>
+          <li><b>QoS DSCP &amp; TLS 1.3:</b> LLQ 30% cho VoIP/iCLASS; Wireshark kiểm chứng mã hóa 443.</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="grid-4">
+      <article class="card reveal"><span class="pill" style="color:var(--acc)">Area 10</span><h3>TP. Hồ Chí Minh</h3><p>HQ 60 Hai Bà Trưng (<code>172.16.1.0/24</code>), VP 125 Hòa Hưng (<code>172.16.2.0/24</code>) &amp; cụm trường <code>10.10.0.0/16</code>.</p></article>
+      <article class="card reveal"><span class="pill" style="color:var(--t)">Area 20</span><h3>Hà Nội</h3><p>VP Hà Nội (<code>172.16.20.0/24</code>) và cụm trường Bắc. Router ABR <code>R_HN</code> gộp tuyến <code>10.20.0.0/16</code>.</p></article>
+      <article class="card reveal"><span class="pill" style="color:var(--v)">Area 30</span><h3>Huế</h3><p>VP Huế (<code>172.16.30.0/24</code>) và cụm trường Trung. Router ABR <code>R_HUE</code> gộp tuyến <code>10.30.0.0/16</code>.</p></article>
+      <article class="card reveal"><span class="pill">Area 0</span><h3>Backbone</h3><p>HQ và 3 văn phòng nối bằng tunnel <strong>GRE-over-IPSec</strong> mang OSPF; Internet thoát cục bộ (Local Breakout).</p></article>
+    </div>
+
+    <div class="proto-strip" aria-label="Công nghệ và giao thức sử dụng">
+      <span>VLSM (31 Subnets)</span><span>IEEE 802.1Q</span><span>OSPF Multi-Area · ABR /16</span><span>GRE-over-IPSec (AES-256)</span><span>Port Security · DHCP Snooping</span><span>Wi-Fi 6 · 802.11k/v/r</span><span>Kids Mode · WSS 443</span><span>QoS DSCP (EF/AF41)</span><span>TLS 1.3 · Wireshark</span><span>Backup 3-2-1 · Green PoE</span>
+    </div>
+  </section>
+
+  <!-- 1. TOPOLOGY TƯƠNG TÁC -->
+  <section id="topo">
+    <span class="eyebrow">Công cụ 01 · Sơ đồ mạng</span>
+    <h2>Topology tương tác 3 khu vực</h2>
+    <p class="lead">Bấm trực tiếp vào bất kỳ cơ sở nào để nhảy xuống bảng VLSM và chính sách chi tiết của cơ sở đó.</p>
+    <div class="panel"><svg id="topo-svg" viewBox="0 0 1200 700" role="img" aria-label="Sơ đồ topology Net7"></svg></div>
+  </section>
+
+  <!-- 2. VLSM EXPLORER -->
+  <section id="vlsm">
+    <span class="eyebrow">Công cụ 02 · Quy hoạch địa chỉ IPv4</span>
+    <h2>VLSM Explorer (31 mạng con · 6 cơ sở)</h2>
+    <p class="lead">Chọn cơ sở để xem mức sử dụng trong dải <code>/24</code>. Bấm từng dòng để xem chính sách VLAN, hoặc bấm trực tiếp vào địa chỉ IP để sao chép nhanh.</p>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div class="bar" id="bar" aria-hidden="true"></div>
+    <p id="used"></p>
+    <div class="tw"><table><thead><tr><th>VLAN</th><th>Phân vùng</th><th>Subnet</th><th>Gateway</th><th>Dải khả dụng</th><th>Hosts</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <div class="panel" id="pol" aria-live="polite"></div>
+  </section>
+
+  <!-- 3. WI-FI 6 ROAMING -->
+  <section id="wifi">
+    <span class="eyebrow">Công cụ 03 · Wi-Fi 6 mật độ cao</span>
+    <h2>Mô phỏng Roaming 802.11k/v/r (3 phòng liền kề)</h2>
+    <p class="lead">Kéo xe 50 tablet dọc hành lang 3 phòng. Tắt <strong>802.11k/v + Minimum RSSI −72 dBm</strong> (vạch cam trên thanh sóng) để thấy lỗi <i>Sticky Client</i>.</p>
+    <div class="panel">
+      <div class="corr"><i style="left:0">Phòng 1</i><i style="left:33.3%">Phòng 2</i><i style="left:66.6%">Phòng 3</i><b id="wc"></b></div>
+      <input type="range" id="wp" min="0" max="100" value="12" aria-label="Vị trí thiết bị trong hành lang 3 phòng học">
+      <label class="sw"><input type="checkbox" id="wk" checked> Bật 802.11k/v/r + Minimum RSSI −72 dBm (giữ nguyên IP trong VLAN 30)</label>
+      <div id="wr" class="wr"></div>
+      <p id="wl" class="lead" aria-live="polite" style="margin-top:12px;font-size:14px;color:#d6ebe7"></p>
+      <p class="lead" style="font-size:12.5px;margin-top:4px">Kênh: 2.4 GHz dùng <code>1–6–11</code> (20 MHz); 5 GHz dùng <code>36–44–149</code> (40 MHz) · TX Power 12/15 dBm.</p>
+    </div>
+  </section>
+
+  <!-- 4. ACL & PACKET FLOW SIMULATOR -->
+  <section id="acl">
+    <span class="eyebrow">Công cụ 04 · Kiểm thử chính sách truy cập</span>
+    <h2>Mô phỏng luồng gói tin &amp; ma trận 42 luồng</h2>
+    <p class="lead">Chọn nguồn – đích hoặc bấm nhanh test case (TC01–TC10); bấm chạy ma trận để rà soát toàn bộ 42 cặp PERMIT/DENY.</p>
+    <div class="panel">
+      <div class="chips" id="tcs"></div>
+      <div class="two"><select id="ss" aria-label="Nguồn"></select><select id="sd" aria-label="Đích"></select></div>
+      <div class="route"><span id="rs"></span><b id="rg"></b><span id="rd"></span></div>
+      <pre id="so" class="out" role="status" aria-live="polite"></pre>
+      <button class="chip" id="mx">Hiện ma trận 42 luồng</button>
+      <div class="tw" id="mt" hidden></div>
+    </div>
+  </section>
+
+  <!-- 5. KIDS MODE (SINGLE-APP KIOSK) & 50 TABLETS -->
+  <section id="kids">
+    <span class="eyebrow">Công cụ 05 · Kiểm soát lớp học (TC02 &amp; TC20)</span>
+    <h2>Kids Mode (chỉ hiện app iCLASS) &amp; Khóa màn hình 50 tablet</h2>
+    <p class="lead"><strong>Lớp 1:</strong> Màn hình tablet khóa Kiosk chỉ hiển thị duy nhất biểu tượng <code>iCLASS</code> — không có trình duyệt hay game để mở; bấm thoát yêu cầu mã PIN IT. <strong>Lớp 2:</strong> Giáo viên khóa/mở 50 màn hình theo Session ID qua WSS 443 tới Local Server (VLAN 50).</p>
+    <div class="panel">
+      <div class="kc">
+        <label>Session ID <input id="ksid" value="ISMART7A"></label>
+        <button class="chip" id="kl">🔒 Khóa màn hình lớp</button>
+        <button class="chip" id="ku">🔓 Mở khóa</button>
+        <button class="chip" id="kg">⌂ HS bấm thoát Kids Mode</button>
+        <button class="chip warn" id="kw" aria-pressed="false">📡 Mất WAN</button>
+      </div>
+      <div class="kids-layout">
+        <div class="tablet-frame" aria-label="Mô phỏng màn hình thật của tablet học sinh trong Kids Mode">
+          <div class="tablet-topbar">
+            <b id="tb-id">Tablet #11 · 10.10.1.15</b>
+            <span id="tb-net">LAN · VLAN 30</span>
+          </div>
+          <div class="tablet-screen">
+            <div class="kiosk-pill">KIDS MODE · CHỈ HIỂN THỊ iCLASS</div>
+            <button type="button" class="app-only-btn" id="tb-open-iclass" title="Mở ứng dụng iCLASS">
+              <span>📘</span>
+              <strong>iCLASS</strong>
+            </button>
+            <p class="kiosk-empty-note">Trên màn hình chỉ có duy nhất app <b>iCLASS</b>. Trình duyệt, YouTube, Game &amp; Cài đặt đã bị ẩn hoàn toàn.</p>
+            <div class="tablet-overlay" id="tb-lock-ov">
+              <div style="font-size:26px">🔒</div>
+              <strong>MÀN HÌNH ĐÃ KHÓA BỞI GIÁO VIÊN</strong>
+              <small id="tb-lock-msg">Chú ý theo dõi Video bài giảng trên Tivi lớp học (Session ID: ISMART7A).</small>
+            </div>
+            <div class="tablet-overlay pin" id="tb-pin-ov">
+              <div style="font-size:24px">🛡️</div>
+              <strong>YÊU CẦU MÃ PIN QUẢN TRỊ IT</strong>
+              <small>Không thể thoát Kids Mode ra Android để mở trình duyệt hay game ngoài luồng.</small>
+              <button type="button" class="chip" id="tb-pin-close" style="margin-top:6px;padding:6px 12px;font-size:11.5px;min-height:0">Quay lại iCLASS</button>
+            </div>
+          </div>
+          <button type="button" class="exit-kiosk-btn" id="tb-exit-btn">⌂ Thử bấm Home / Thoát Kids Mode</button>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--mut);margin-bottom:8px">
+            <span>Lưới <strong>50 tablet</strong> (bấm chọn 1 máy để xem màn hình bên trái)</span>
+            <code id="km-state-pill">TRẠNG THÁI: ĐANG MỞ (iCLASS)</code>
+          </div>
+          <div id="kt" class="kt"></div>
+          <pre id="kn" class="out" aria-live="polite" style="margin-bottom:0"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. WIRESHARK TC13 -->
+  <section id="wireshark">
+    <span class="eyebrow">Công cụ 06 · Thực nghiệm TC13 (Mục 6.4)</span>
+    <h2>Wireshark: HTTP (cổng 80) so với HTTPS TLS 1.3 (cổng 443)</h2>
+    <div class="tabs">
+      <button class="chip" data-w="http" aria-pressed="true">HTTP · cổng 80 (Văn bản rõ)</button>
+      <button class="chip" data-w="tls" aria-pressed="false">HTTPS · TLS 1.3 · cổng 443 (Mã hóa)</button>
+    </div>
+    <div class="panel">
+      <div class="ws-bar"><div id="wsf">Display Filter: http.request.method == "POST"</div><span>Wireshark 4.4</span></div>
+      <div class="tw" style="margin-top:0"><table><thead><tr><th>No.</th><th>Nguồn</th><th>Đích</th><th>Giao thức</th><th>Thông tin</th></tr></thead><tbody id="wsl"></tbody></table></div>
+      <pre id="wsp" class="out"></pre>
+      <p class="lead" style="font-size:12.5px">Dữ liệu mô phỏng thực nghiệm học thuật, không phải tài khoản thật.</p>
+    </div>
+  </section>
+
+  <!-- 7. CAPEX, ROI & GREEN POE -->
+  <section id="chiphi">
+    <span class="eyebrow">Công cụ 07 · Dự toán thiết bị (Bảng 6.8)</span>
+    <h2>CAPEX tối ưu P/P, ROI mô phỏng &amp; Green PoE</h2>
+    <p class="lead">Đơn giá tra cứu trực tiếp tại các cửa hàng máy tính &amp; thiết bị mạng VN tháng 11/2026 (Phong Vũ, Tin Học Ngôi Sao, Phúc Anh, Võ Hoàng, WIFI.COM.VN, Thế Giới Máy Chủ, Tân Phát; chưa gồm tablet, bảng tương tác, OPEX và Cụm 2 Server HA ~307,9 tr tại Trụ sở).</p>
+    <div class="tw"><table><thead><tr><th>Hạng mục</th><th>Thiết bị đề xuất</th><th>Đơn giá</th><th>SL (iCLASS / iDIGI)</th><th>So với cấu hình gốc</th></tr></thead><tbody id="bom"></tbody></table></div>
+    <div class="grid">
+      <div class="panel">
+        <h3>Quy mô &amp; CAPEX</h3>
+        <label class="f">Số trường iCLASS <output id="niv"></output><input type="range" id="ni" min="0" max="200" value="5"></label>
+        <label class="f">Số trường iDIGI <output id="ndv"></output><input type="range" id="nd" min="0" max="200" value="5"></label>
+        <p class="big" id="cx"></p><p id="cs" class="lead" style="font-size:13px"></p>
+      </div>
+      <div class="panel">
+        <h3>ROI mô phỏng</h3>
+        <label class="f">Giờ gián đoạn tránh được / trường / tháng<input type="number" id="hs" value="5" min="0"></label>
+        <label class="f">Giá trị mỗi giờ (đ)<input type="number" id="hv" value="800000" min="0" step="50000"></label>
+        <p class="big" id="ro"></p><p id="pb" class="lead" style="font-size:13px"></p>
+      </div>
+      <div class="panel">
+        <h3>Green PoE (mỗi trường)</h3>
+        <label class="f">Số AP<input type="number" id="ga" value="3" min="1"></label>
+        <label class="f">Công suất mỗi AP (W)<input type="number" id="gw" value="9" min="1"></label>
+        <label class="f">Điện năng nền của switch (W)<input type="number" id="gs" value="44" min="0"></label>
+        <label class="f">Giờ tắt mỗi đêm (T2–T7)<input type="number" id="gh" value="12" min="0" max="24"></label>
+        <p class="big" id="gr"></p>
+        <p class="lead" id="gr-sub" style="font-size:12.5px"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ĐỘI NGŨ THỰC HIỆN -->
+  <section id="doi-ngu">
+    <span class="eyebrow">Thành viên Nhóm 07</span>
+    <h2>Đội ngũ thực hiện – Khoa CNTTKD (UEH)</h2>
+    <div class="grid" id="team"></div>
+  </section>
+
+  <!-- TIẾN ĐỘ THỰC HIỆN (GỌN 1 HÀNG 5 BƯỚC) -->
+  <section id="tien-do">
+    <span class="eyebrow">Tiến độ thực hiện đồ án</span>
+    <h2>5 giai đoạn triển khai (Tuần 1 – 10)</h2>
+    <div class="roadmap">
+      <div class="step reveal">
+        <div class="step-top"><b>GĐ 1 · T1–2</b><span>✓ 100%</span></div>
+        <h3>Khảo sát &amp; Lý thuyết</h3>
+        <p>Khảo sát iSMART (FPT AC1000C V2, iCLASS/iDIGI), tổng hợp rủi ro &amp; cơ sở lý thuyết (Ch. 1–3).</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-top"><b>GĐ 2 · T3–4</b><span>✓ 100%</span></div>
+        <h3>Phân tích &amp; VLSM</h3>
+        <p>Yêu cầu FR1–FR14, chia 31 mạng con VLSM (6 cơ sở), ma trận ACL &amp; sơ đồ Draw.io (Ch. 4–5).</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-top"><b>GĐ 3 · T5–6</b><span>✓ 100%</span></div>
+        <h3>Lab 61 thiết bị &amp; Wireshark</h3>
+        <p>Triển khai Packet Tracer (OSPF ABR /16, GRE-IPSec, Dual WAN, QoS, SSH/SNMP) &amp; bắt gói HTTP/TLS 1.3.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-top"><b>GĐ 4 · T7–8</b><span>✓ 100%</span></div>
+        <h3>Web Demo &amp; 22 Test Cases</h3>
+        <p>Hoàn thiện công cụ mô phỏng tương tác Net7 × iSMART và kiểm chứng đạt 22/22 test case (TC01–TC22).</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-top"><b>GĐ 5 · T9–10</b><span>✓ Sẵn sàng</span></div>
+        <h3>Báo cáo UEH &amp; Bảo vệ</h3>
+        <p>Dự toán CAPEX tối ưu P/P (Bảng 6.8), lộ trình thực tế 20 ngày (Bảng 6.9) và bảo vệ đồ án.</p>
+      </div>
+    </div>
+  </section>
+<!-- THÔNG TIN LIÊN HỆ (GIAO DIỆN 2 CỘT CHUẨN HỌC THUẬT) -->
+  <section id="lien-he">
+    <span class="eyebrow">08 · Thông tin liên hệ</span>
+    <h2>Trao đổi học thuật &amp; nhận hồ sơ kỹ thuật Nhóm 07</h2>
+    <p class="lead">Liên hệ Nhóm 07 để trao đổi về sơ đồ mạng, bộ cấu hình CLI Cisco Packet Tracer (<code>.pkt</code>), bản bắt gói Wireshark hoặc đóng góp phản biện cho đồ án.</p>
+
+    <div class="contact-grid">
+      <div class="card contact-stack reveal">
+        <div class="contact-item">
+          <span class="contact-ico" aria-hidden="true">✉</span>
+          <div>
+            <b>Email chính thức của Nhóm 07</b>
+            <p><code class="copyable" id="copy-mail-code" title="Bấm để sao chép">net7campus.official@gmail.com</code> — Tiếp nhận câu hỏi, góp ý phản biện và yêu cầu xem demo hệ thống.</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-ico" aria-hidden="true">🎓</span>
+          <div>
+            <b>Đơn vị học thuật &amp; Giảng viên hướng dẫn</b>
+            <p>Học phần <strong>Mạng máy tính</strong> · GVHD: <strong>TS. Nguyễn Mạnh Tuấn</strong><br>Khoa Công nghệ Thông tin Kinh doanh (CNTTKD) – Trường Công nghệ và Thiết kế, Đại học Kinh tế TP. Hồ Chí Minh (UEH).</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-ico" aria-hidden="true">🏢</span>
+          <div>
+            <b>Cơ sở khảo sát thực tế (iSMART Education)</b>
+            <p>Trụ sở chính: 60 Hai Bà Trưng, P. Bến Nghé, Q.1 · Văn phòng Vận hành: 125 Hòa Hưng, P.12, Q.10, TP.HCM · VP Hà Nội &amp; VP Huế.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card contact-right reveal">
+        <div>
+          <span class="pill" style="color:var(--acc)">KẾT NỐI NHANH VỚI NHÓM 07</span>
+          <h3>Gửi email hoặc sao chép địa chỉ liên hệ</h3>
+          <p style="margin-top:8px">Trưởng nhóm phụ trách điều phối hồ sơ kỹ thuật: <strong>Lê Thế Vinh</strong> (MSSV: <code>31251022000</code> · Lớp IT0001 – K51). Toàn bộ tài liệu báo cáo, file mô phỏng <code>.pkt</code> và mã nguồn trang web đều được lưu trữ công khai tại Phụ lục A của báo cáo đồ án.</p>
+          <div class="contact-actions">
+            <a class="btn-cta pri" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=net7campus.official%40gmail.com&amp;su=Trao%20%C4%91%E1%BB%95i%20%C4%90%E1%BB%93%20%C3%A1n%20M%E1%BA%A1ng%20m%C3%A1y%20t%C3%ADnh%20-%20Nh%C3%B3m%2007%20(Net7%20x%20iSMART)" target="_blank" rel="noopener noreferrer">✉ Mở Gmail gửi nhóm ↗</a>
+            <button type="button" class="btn-cta sec" id="copy-mail">📋 Sao chép email nhóm</button>
+          </div>
+          <p class="copy-inline" id="copy-msg" aria-live="polite"></p>
+        </div>
+        <p class="contact-note">
+          Lưu ý học thuật: Đây là sản phẩm Landing Page minh họa phục vụ học phần Mạng máy tính (UEH). Các số liệu chi phí/ROI và luồng bắt gói là dữ liệu mô phỏng học thuật, không phải báo giá thương mại của iSMART Education.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Net7 × iSMART Education · Đồ án Mạng máy tính · Nhóm 07 · Khoa CNTTKD – UEH · 2026</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="application/json" id="db">{"iclass": [["30", "50 Tablet (3 Phòng)", "10.10.X.0/26", "10.10.X.1", "10.10.X.2 – .62 (61 IPs)", 50, "Cụm ~50 Máy tính bảng Học sinh dùng chung (Luân chuyển 3 phòng iCLASS theo TKB · Roaming 802.11k/v/r)", "Gateway: 10.10.X.1 | Khả dụng: 61 IPs (+1 Gateway) | Chính sách: Cụm ~50 tablet dùng chung luân chuyển qua 3 phòng học iCLASS theo thời khóa biểu; cài sẵn Kids Mode (khóa Kiosk chỉ hiển thị và chạy duy nhất ứng dụng iCLASS, khóa hoàn toàn trình duyệt web). Cả 3 AP gắn trần ở 3 phòng cùng phát SSID Ismart (iSMART-Class) và ánh xạ vào chung VLAN 30, giúp 50 tablet giữ nguyên địa chỉ IP (10.10.X.2–.62) và không rớt phiên học WebSocket (WSS 443) khi đẩy xe sang phòng kế bên."], ["20", "GV & Tivi T.Tác", "10.10.X.64/28", "10.10.X.65", "10.10.X.66 – .78 (13 IPs)", 10, "Thiết bị Hiển thị Lớp & Quản lý 3 phòng: Tivi tương tác cắm thẳng Ethernet hoặc Laptop GV + PC Điều phối viên", "Gateway: 10.10.X.65 | Khả dụng: 13 IPs (+1 Gateway) | Chính sách: Đối với phòng dùng Tivi tương tác: Tivi cắm dây Ethernet trực tiếp vào Switch (VLAN 20, bật Port Security Sticky MAC) để truy cập https://iclass.ismart.edu.vn/ (trỏ về Local Server 10.10.X.82), khởi tạo phiên học Session ID (Access Code) và bấm nút Khóa màn hình khi bật video giảng bài hoặc Mở khóa khi cho 50 tablet chơi game Luyện tập mà không cần laptop giáo viên. Một số phòng dùng Tivi thường sẽ cắm cáp HDMI từ laptop giáo viên; PC Điều phối viên đặt chung VLAN này."], ["50", "Local Cache & Backup", "10.10.X.80/28", "10.10.X.81", "10.10.X.82 – .94 (13 IPs)", 5, "Mini PC Local Cache Server & Hàng đợi Backup cục bộ (Phương án A: Dell OptiPlex Micro 1TB NVMe + 2TB HDD)", "Gateway: 10.10.X.81 | Khả dụng: 13 IPs (+1 Gateway) | Phương án A + Backup đa lớp: Mini PC Dell OptiPlex (10.10.X.82) chủ động kéo (pull) sẵn học liệu 3D/video và tài nguyên game Luyện tập của https://iclass.ismart.edu.vn/ từ Cụm 2 Server HA tại Trụ sở 60 Hai Bà Trưng ngoài giờ học; phân giải DNS Split-Horizon, cấp RADIUS/NTP cục bộ. Khi đứt cáp WAN hoàn toàn, Mini PC tự điều phối phiên học qua LAN (~1 ms) và ghi điểm số vào hàng đợi backup cục bộ trên ổ 2TB HDD để đồng bộ ngược khi mạng phục hồi."], ["99", "Quản trị Hạ tầng", "10.10.X.96/28", "10.10.X.97", "10.10.X.98 – .110 (13 IPs)", 8, "Quản trị Router MikroTik, Switch PoE & 3 AP Grandstream GWN7660 Gắn Trần", "Gateway: 10.10.X.97 | Khả dụng: 13 IPs (+1 Gateway) | Quản trị tập trung 3 AP Grandstream GWN7660 gắn trần (chung 1 SSID Ismart ánh xạ vào VLAN 30, bật Fast Roaming 802.11k/v/r, Minimum RSSI -72 dBm, lệch kênh 1-6-11 / 36-44-149); AP gửi xác thực RADIUS (UDP 1812/1813) tới Local Server (10.10.X.82). Chỉ mở SSH cho dải IT Support: 125 Hòa Hưng (172.16.2.64/27) và IT khu vực của trường (Hà Nội 172.16.20.64/27, Huế 172.16.30.32/27); SNMPv3/Syslog chỉ cho máy giám sát tại HQ (VLAN 60)."]], "idigi": [["20", "7–8 Phòng iDIGI", "10.10.X.0/27", "10.10.X.1", "10.10.X.2 – .30 (29 IPs)", 16, "Cụm 7–8 Phòng học iDIGI: Laptop GV + Máy chiếu (HDMI) + Bảng tương tác (cổng tương tác) + Loa (cổng loa)", "Gateway: 10.10.X.1 | Khả dụng: 29 IPs (+1 Gateway) | Bật Port Security (Sticky MAC, đặt max-MAC phù hợp và errdisable auto-recovery để không phải reset cổng thủ công khi giáo viên đổi laptop) & DHCP Snooping trên các cổng Switch phòng học; Cho phép tải bài giảng số từ NAS nội bộ (VLAN 50) & ra Internet."], ["40", "Wi-Fi Phụ trợ", "10.10.X.32/27", "10.10.X.33", "10.10.X.34 – .62 (29 IPs)", 20, "Wi-Fi Phụ trợ Giáo viên & Trợ giảng", "Gateway: 10.10.X.33 | Khả dụng: 29 IPs (+1 Gateway) | Chính sách: Chỉ cho phép NAT/PAT ra ngoài Internet; Cô lập khỏi hệ thống NAS học liệu (VLAN 50) và mạng Quản trị thiết bị (VLAN 99)."], ["10", "Điều phối viên", "10.10.X.64/28", "10.10.X.65", "10.10.X.66 – .78 (13 IPs)", 6, "PC Điều phối viên iSMART tại Trường & Giáo vụ", "Gateway: 10.10.X.65 | Cho phép kết nối VPN về Văn phòng 125 Hòa Hưng và Trụ sở 60 Hai Bà Trưng để báo cáo lịch giảng dạy và tình trạng thiết bị."], ["99", "Quản trị Mạng", "10.10.X.80/28", "10.10.X.81", "10.10.X.82 – .94 (13 IPs)", 10, "Quản trị Router, Switch PoE & 8 Access Point", "Gateway: 10.10.X.81 | Chỉ chấp nhận kết nối SSH (Port 22) từ dải IT Support: 125 Hòa Hưng (172.16.2.64/27) và IT khu vực của trường (Hà Nội 172.16.20.64/27, Huế 172.16.30.32/27) qua đường hầm IPSec VPN; SNMPv3/Syslog chỉ cho máy giám sát tại HQ (VLAN 60)."], ["50", "NAS Học liệu", "10.10.X.96/29", "10.10.X.97", "10.10.X.98 – .102 (5 IPs)", 4, "Thiết bị NAS Đồng bộ Học liệu iDIGI Nội bộ", "Gateway: 10.10.X.97 | NAS chủ động kéo (pull) gói bài giảng số iDIGI từ Content Master (60 Hai Bà Trưng) qua HTTPS/rsync ngoài giờ học, giúp 7–8 phòng học mở bài giảng tức thì qua mạng LAN; DNS forwarder, NTP và DHCP cục bộ chạy ngay trên Router trường."]], "hq": [["10", "BGĐ & Hành chính", "172.16.1.0/26", "172.16.1.1", "172.16.1.2 – .62 (61 IPs)", 30, "Ban Giám đốc, Tài chính – Kế toán & Nhân sự", "Gateway: 172.16.1.1 | Bảo vệ nghiêm ngặt bằng Firewall & Sticky MAC; Toàn quyền truy cập hệ thống ERP/Báo cáo trên DMZ & Server Nội bộ (VLAN 50/60)."], ["20", "R&D Blue Ocean", "172.16.1.64/26", "172.16.1.65", "172.16.1.66 – .126 (61 IPs)", 45, "Khối Học thuật & R&D Blue Ocean Tech", "Gateway: 172.16.1.65 | Đội ngũ phát triển phần mềm iCLASS và bài giảng số iDIGI; Được phép đẩy bản cập nhật lên Cụm Server DMZ (VLAN 50)."], ["50", "DMZ Server Farm", "172.16.1.128/28", "172.16.1.129", "172.16.1.130 – .142 (13 IPs)", 8, "Cụm Máy chủ DMZ iCLASS/iDIGI: App/API Server, Content Master (Kho học liệu), Reverse Proxy/WAF, Web/Mail", "Gateway: 172.16.1.129 | Đặt tại vùng DMZ sau Firewall: iCLASS App Server (tài khoản, quản lý lớp, nhận kết quả đồng bộ từ trường) và iDIGI Content Master công bố qua Reverse Proxy/WAF HTTPS 443; chỉ App Server được truy cập Master DB ở VLAN 60. Local Cache tại trường chủ động kéo (pull) học liệu qua VPN; DMZ không được khởi tạo kết nối vào mạng trường/văn phòng. Sao lưu 3-2-1 đẩy ra VNPT/FPT Cloud Backup (chiều đi ra)."], ["60", "Server Nội bộ", "172.16.1.144/28", "172.16.1.145", "172.16.1.146 – .158 (13 IPs)", 8, "Vùng Server Nội bộ: Master DB, DNS nội bộ, DHCP, NTP, AAA & máy giám sát", "Gateway: 172.16.1.145 | Vùng server nội bộ sau Firewall, không công bố ra Internet: Master DB chỉ nhận kết nối từ App Server (VLAN 50); DNS nội bộ (split-horizon), DHCP cho các VLAN tại HQ qua Relay, NTP, AAA (RADIUS/TACACS+) và máy giám sát SNMPv3/Syslog/NetFlow; Router trường/văn phòng chỉ được truy cập DNS/NTP qua VPN."], ["40", "Wi-Fi Khách Q.1", "172.16.1.160/27", "172.16.1.161", "172.16.1.162 – .190 (29 IPs)", 20, "Mạng Wi-Fi Khách & Đối tác tại Lầu 3, 60 Hai Bà Trưng", "Gateway: 172.16.1.161 | Bật Guest Isolation: chỉ cho phép DHCP/DNS và ra Internet; deny toàn bộ dải riêng RFC1918 (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) nên khách không vào được mạng nội bộ HQ (172.16.1.0/24) lẫn mạng VPN chi nhánh."], ["99", "Quản trị Core", "172.16.1.192/28", "172.16.1.193", "172.16.1.194 – .206 (13 IPs)", 8, "Quản trị Core Router, Firewall & VPN Concentrator", "Gateway: 172.16.1.193 | Giám sát tập trung (SNMP/Syslog) toàn bộ đường hầm IPSec VPN nối tới 125 Hòa Hưng và cụm trường THCS đại diện; máy giám sát đặt ở VLAN 60."]], "hh": [["10", "Khối Vận hành", "172.16.2.0/26", "172.16.2.1", "172.16.2.2 – .62 (61 IPs)", 40, "Khối Vận hành Dự án & Điều phối Cụm trường THCS đại diện", "Gateway: 172.16.2.1 | Quản lý lịch giảng dạy, phân bổ giáo viên và điều phối vận hành cụm trường THCS đại diện."], ["20", "IT Helpdesk", "172.16.2.64/27", "172.16.2.65", "172.16.2.66 – .94 (29 IPs)", 25, "Phòng Kỹ thuật IT Support & Bảo trì Thiết bị Trường học", "Gateway: 172.16.2.65 | Được cấp quyền đặc biệt trong chính sách VPN để truy cập từ xa vào VLAN 99 & VLAN 50 của cụm trường THCS đại diện nhằm xử lý sự cố kỹ thuật."], ["30", "Phòng Đào tạo", "172.16.2.96/27", "172.16.2.97", "172.16.2.98 – .126 (29 IPs)", 25, "Phòng Đào tạo Giáo viên & Giảng thử iCLASS/iDIGI", "Gateway: 172.16.2.97 | Thực hành giảng thử trên Tivi tương tác/Bảng iDIGI và kiểm thử kịch bản lớp học số."], ["40", "IP Phone & Wi-Fi", "172.16.2.128/27", "172.16.2.129", "172.16.2.130 – .158 (29 IPs)", 25, "Tổng đài IP Phone Hỗ trợ Trường học & Wi-Fi", "Gateway: 172.16.2.129 | Wi-Fi nội bộ và IP Phone dùng chung VLAN 40; đánh dấu DSCP EF cho gói thoại VoIP/UDP và ưu tiên băng thông QoS để tiếp nhận yêu cầu hỗ trợ nhanh từ giáo viên đứng lớp. Khi mở rộng trên 25 thiết bị nên tách Voice VLAN riêng."], ["50", "Kids Mode & Backup", "172.16.2.160/28", "172.16.2.161", "172.16.2.162 – .174 (13 IPs)", 10, "Server Quản trị Chính sách Kids Mode & Backup Nội bộ", "Gateway: 172.16.2.161 | Máy chủ quản trị chính sách Kids Mode (khóa Kiosk trên Android Tablet chỉ hiển thị và chạy duy nhất ứng dụng iCLASS, khóa hoàn toàn trình duyệt web): quản lý danh sách whitelist ứng dụng và đẩy bản cập nhật cấu hình xuống dàn tablet tại các trường qua IPSec VPN; tablet lưu cấu hình cục bộ nên vẫn duy trì khóa Kiosk kể cả khi mất WAN."], ["99", "Quản trị Mạng", "172.16.2.176/28", "172.16.2.177", "172.16.2.178 – .190 (13 IPs)", 8, "Quản trị Router Hòa Hưng, Switch PoE & Access Point", "Gateway: 172.16.2.177 | Phân vùng quản trị thiết bị hạ tầng mạng tại cơ sở 125 Hòa Hưng, kết nối giám sát tập trung với Core Firewall tại 60 Hai Bà Trưng."]], "hn_branch": [["10", "Điều hành Bắc", "172.16.20.0/26", "172.16.20.1", "172.16.20.2 – .62 (61 IPs)", 35, "Văn phòng Hà Nội – Ban Điều hành & Điều phối Trường Phía Bắc", "Gateway: 172.16.20.1 | Kết nối IPSec Site-to-Site VPN về Trụ sở chính 60 Hai Bà Trưng (TP.HCM) để đồng bộ dữ liệu ERP, lịch giảng dạy và điều phối các trường tại Hà Nội."], ["20", "IT Support HN", "172.16.20.64/27", "172.16.20.65", "172.16.20.66 – .94 (29 IPs)", 20, "Văn phòng Hà Nội – Kỹ thuật IT Helpdesk & Quản lý Thiết bị Trường", "Gateway: 172.16.20.65 | Hỗ trợ kỹ thuật trực tiếp cho cụm các trường học tại Hà Nội (10.20.X.0/24) — dải này được cấp quyền SSH vào VLAN 99 của các trường Hà Nội —, phối hợp với máy chủ Kids Mode của IT Department tại 125 Hòa Hưng (TP.HCM)."], ["30", "Đào tạo GV HN", "172.16.20.96/27", "172.16.20.97", "172.16.20.98 – .126 (29 IPs)", 20, "Văn phòng Hà Nội – Phòng Đào tạo Giáo viên", "Gateway: 172.16.20.97 | Ưu tiên QoS (DSCP EF/AF41) cho thoại nội bộ VoIP và kết nối điều phối giữa Hà Nội ⇄ TP.HCM (60 HBT & 125 Hòa Hưng) ⇄ Các điểm trường."], ["50", "Regional Cache HN", "172.16.20.128/28", "172.16.20.129", "172.16.20.130 – .142 (13 IPs)", 8, "Văn phòng Hà Nội – Máy chủ Đồng bộ Học liệu Khu vực & Kids Mode Relay", "Gateway: 172.16.20.129 | Nhận bản sao học liệu iCLASS/iDIGI từ DMZ 60 Hai Bà Trưng và phân phối nhanh cho cụm các trường học tại Hà Nội (dải 10.20.X.0/24)."], ["99", "Quản trị & Cụm Trường", "172.16.20.144/28", "172.16.20.145", "172.16.20.146 – .158 (13 IPs)", 8, "Quản trị VPN Router Hà Nội & Định tuyến Gộp Cụm Trường Bắc", "Gateway: 172.16.20.145 | Router VPN Hà Nội là điểm tổng hợp (ABR) của cụm trường Bắc: quảng bá tuyến gộp (Route Summarization) 10.20.0.0/16 về HQ qua giao thức định tuyến động trên tunnel VTI/GRE-over-IPSec (xem Mục 2.6 và Mục 5.4 trong báo cáo) cho toàn bộ các trường tại Hà Nội (mỗi trường áp dụng mẫu chuẩn 10.20.X.0/24 giống TP.HCM); dải văn phòng 172.16.20.0/24 quảng bá nguyên /24."]], "hue_branch": [["10", "Điều phối Huế", "172.16.30.0/27", "172.16.30.1", "172.16.30.2 – .30 (29 IPs)", 20, "Văn phòng Huế – Bộ phận Điều phối & Vận hành Miền Trung", "Gateway: 172.16.30.1 | Đại diện mô hình Chi nhánh Tinh gọn (Lean Branch); Thiết lập đường hầm IPSec Site-to-Site VPN kết nối trực tiếp về Trụ sở chính 60 Hai Bà Trưng (TP.HCM)."], ["20", "Kỹ thuật & Đào tạo", "172.16.30.32/27", "172.16.30.33", "172.16.30.34 – .62 (29 IPs)", 18, "Văn phòng Huế – Tổ Kỹ thuật IT & Đào tạo Giáo viên Miền Trung", "Gateway: 172.16.30.33 | Giám sát thiết bị bảng tương tác iDIGI, máy tính bảng iCLASS (Kids Mode) và AP Grandstream GWN gắn trần tại các trường học khu vực Huế; dải này được cấp quyền SSH vào VLAN 99 của các trường Huế."], ["40", "Wi-Fi & VoIP Huế", "172.16.30.64/28", "172.16.30.65", "172.16.30.66 – .78 (13 IPs)", 10, "Văn phòng Huế – Mạng Wi-Fi Nội bộ & Điện thoại IP Phone", "Gateway: 172.16.30.65 | Wi-Fi nội bộ và IP Phone dùng chung VLAN 40, phân tách lưu lượng bằng QoS (DSCP EF cho VoIP); Định tuyến cuộc gọi nội bộ miễn phí qua VPN về tổng đài 125 Hòa Hưng và 60 Hai Bà Trưng."], ["50", "NAS Sync Huế", "172.16.30.80/28", "172.16.30.81", "172.16.30.82 – .94 (13 IPs)", 6, "Văn phòng Huế – Thiết bị NAS Đồng bộ Học liệu Khu vực", "Gateway: 172.16.30.81 | Lưu trữ bản sao giáo án điện tử iCLASS/iDIGI tại miền Trung, hỗ trợ đồng bộ nhanh cho các trường liên kết tại Huế (10.30.X.0/24)."], ["99", "Quản trị & Cụm Trường", "172.16.30.96/28", "172.16.30.97", "172.16.30.98 – .110 (13 IPs)", 6, "Quản trị Router VPN Huế & Định tuyến Gộp Cụm Trường Trung", "Gateway: 172.16.30.97 | Router VPN Huế là điểm tổng hợp (ABR) của cụm trường Trung: quảng bá tuyến gộp 10.30.0.0/16 về HQ cho toàn bộ các trường tại Huế (mỗi trường được cấp 1 dải 10.30.X.0/24 theo đúng khuôn mẫu VLSM chuẩn của hệ thống); dải văn phòng 172.16.30.0/24 quảng bá nguyên /24."]]}</script>
+<script type="application/json" id="ex">{"src": [["tablet", "Nguồn: Tablet Học sinh iCLASS (VLAN 30 - 10.10.1.15)"], ["teacher", "Nguồn: Laptop/Tivi tương tác Giáo viên (VLAN 20 - 10.10.1.66)"], ["idigi_gv", "Nguồn: Phòng học iDIGI Bảng tương tác (VLAN 20 - 10.10.6.10)"], ["hh_it", "Nguồn: IT Helpdesk 125 Hòa Hưng, TP.HCM (VLAN 20 - 172.16.2.70)"], ["school_cache", "Nguồn: Local Cache/NAS tại Trường (VLAN 50 - 10.10.1.82)"], ["hq_dmz", "Nguồn: Master Server 60 Hai Bà Trưng, TP.HCM (DMZ - 172.16.1.130)"], ["hn_hue_vp", "Nguồn: Văn phòng Hà Nội / Huế (IPSec VPN - 172.16.20.10 / 172.16.30.10)"]], "dst": [["local_srv", "Đích: Máy chủ iCLASS/NAS tại Trường (VLAN 50 - iCLASS 10.10.X.82 · iDIGI 10.10.X.98)"], ["wan_game", "Đích: Internet WAN (Facebook / YouTube / Game ngoài luồng)"], ["teacher_tv", "Đích: Màn hình Tivi/Laptop Giáo viên (VLAN 20 - 10.10.1.66)"], ["school_mgmt", "Đích: Quản trị Router/Switch Trường THCS (VLAN 99)"], ["hq_cloud", "Đích: Kho học liệu Trụ sở 60 Hai Bà Trưng, TP.HCM (172.16.1.130)"], ["hn_hue_school", "Đích: Server & Lớp học các Trường tại Hà Nội / Huế (10.20.1.82 / 10.30.1.82)"]], "tc": [["TC01 · HS tải bài iCLASS", "tablet", "local_srv"], ["TC02 · HS thoát Kiosk / Web", "tablet", "wan_game"], ["TC07 · IT SSH VLAN 99", "hh_it", "school_mgmt"], ["TC10 · DMZ vào Trường", "hq_dmz", "local_srv"], ["TC06 · Trường 1 ↔ Trường 2", "idigi_gv", "teacher_tv"], ["TC09 · Cache Pull Sync", "school_cache", "hq_cloud"], ["TC15 · VP HN/Huế → HQ", "hn_hue_vp", "hq_cloud"], ["TC17 · VP thoát WAN", "hn_hue_vp", "wan_game"]]}</script>
+<script type="application/json" id="tm">[["LV", "Lê Thế Vinh", "31251022000", "Trưởng nhóm · Network Architect", "Khảo sát mô hình doanh nghiệp giáo dục iSMART (Trụ sở 60 Hai Bà Trưng, Văn phòng 125 Hòa Hưng, Văn phòng Hà Nội, Văn phòng Huế và hệ thống trường THCS đại diện 3 loại hình quy mô); thiết kế kiến trúc tổng thể, quy hoạch địa chỉ IPv4 bằng VLSM cho 6 cơ sở (31 mạng con); xây dựng mô hình cấu hình lõi trên Cisco Packet Tracer (61 thiết bị) và đánh giá mức độ đáp ứng yêu cầu hệ thống."], ["PP", "Phan Tấn Phát", "31251024008", "Web, Kids Mode &amp; Wi-Fi Engineer", "Nghiên cứu lý thuyết Wi-Fi 6 mật độ cao và thiết kế quy hoạch chuyển vùng nhanh IEEE 802.11k/v/r (Minimum RSSI −72 dBm, lệch kênh 1–6–11 / 36–44–149) cho cụm 3 phòng học liền kề; thiết kế cơ chế kiểm soát hai lớp Kids Mode (khóa Kiosk) &amp; khóa màn hình theo Session ID; xây dựng giao diện Website tương tác Net7 × iSMART và mô hình ước tính chi phí – tỷ suất hoàn vốn (ROI)."], ["PH", "Phạm Hùng", "31251024030", "Failover, QoS &amp; CAPEX Engineer", "Thiết kế và kiểm chứng phương án duy trì lớp học tự chủ khi đứt cáp WAN bằng cơ chế Dual WAN Failover (FTTH + 4G LTE qua OSPF fast timers &amp; Floating Static Route) kết hợp Local Cache Server (VLAN 50); triển khai chính sách QoS DSCP (PM_WAN_QOS) tại Văn phòng 125 Hòa Hưng; đề xuất cấu hình thiết bị thực tế, dự toán CAPEX và giải pháp mạng xanh Green PoE."], ["NT", "Nguyễn Đức Thịnh", "31251025922", "Cybersecurity &amp; Wireshark Analyst", "Hệ thống hóa cơ sở lý thuyết bảo mật mạng nhiều lớp, kiểm soát truy cập lớp 2/3 và quản lý thiết bị lớp học; thực nghiệm bắt và phân tích gói tin mạng bằng Wireshark nhằm đối chiếu rủi ro lộ lọt thông tin văn bản rõ trên giao thức HTTP (cổng 80) với cơ chế mã hóa đầu cuối HTTPS/TLS 1.3 (cổng 443) trong môi trường lớp học số."], ["TT", "Nguyễn Tấn Tài", "31251024031", "Network Implementation &amp; Testing QA", "Thiết lập môi trường và công cụ triển khai mô phỏng; cấu hình phân đoạn VLAN, định tuyến liên VLAN, dịch vụ mạng cốt lõi (DHCP, DNS Split-Horizon, cụm máy chủ DMZ VLAN 50 &amp; Server nội bộ VLAN 60), bảo mật lớp 2 (Port Security Sticky MAC, DHCP Snooping) và tổng hợp ma trận kiểm thử hệ thống (TC01–TC22)."], ["HN", "Huỳnh Quang Ngọc", "31251022852", "Routing, VPN &amp; Security Engineer", "Nghiên cứu cơ sở lý thuyết VPN/IPSec và định tuyến OSPF Multi-Area; xây dựng ma trận chính sách kiểm soát truy cập (ACL); triển khai và kiểm chứng định tuyến OSPF Multi-Area gộp tuyến <code>/16<\/code> (ABR Hà Nội, Huế), đường hầm mã hóa GRE-over-IPSec (<code>Tunnel101<\/code>), cô lập phân vùng và kênh quản trị SSHv2/SNMP vào VLAN 99."], ["ĐD", "Đoàn Tấn Dũng", "31251020910", "System Architecture &amp; Backup Engineer", "Hệ thống hóa cơ sở lý thuyết kiến trúc mạng LAN/WAN, mô hình OSI/TCP-IP, DMZ, NAT/PAT và phân tích – chuyển đổi yêu cầu chức năng/phi chức năng thành giải pháp kỹ thuật; thiết kế sơ đồ logic và sơ đồ vật lý trên Draw.io; thiết kế và kiểm chứng quy trình giám sát, sao lưu – phục hồi dữ liệu theo quy tắc 3-2-1."]]</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),DB=JSON.parse($('#db').textContent),TM=JSON.parse($('#tm').textContent);
+const NM={iclass:'Trường iCLASS',idigi:'Trường iDIGI',hq:'HQ 60 Hai Bà Trưng',hh:'VP 125 Hòa Hưng',hn_branch:'VP Hà Nội',hue_branch:'VP Huế'};
+const COL=['#d4f175','#5eead4','#a78bfa','#f9a8d4','#fdba74','#7dd3fc'];
+
+/* Toast helper */
+let toastT;
+function toast(msg){
+  const el=$('#toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+/* Copy helper */
+function copyText(txt,label){
+  if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>toast('✓ Đã sao chép '+(label||txt)));
+  else toast(txt);
+}
+const doCopyMail=()=>{
+  const mail='net7campus.official@gmail.com';
+  copyText(mail,mail);
+  if($('#copy-msg'))$('#copy-msg').textContent='✓ Đã sao chép: '+mail;
+};
+$('#copy-mail').onclick=doCopyMail;
+if($('#copy-mail-code'))$('#copy-mail-code').onclick=doCopyMail;
+
+/* ===== VLSM Explorer ===== */
+function show(k){
+  document.querySelectorAll('#tabs .chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));
+  const r=DB[k];let used=0;
+  $('#bar').innerHTML=r.map((v,i)=>{
+    const n=2**(32-+v[2].split('/')[1]);used+=n;
+    return `<i data-i="${i}" style="width:${n/2.56}%;background:${COL[i%6]}" title="VLAN ${v[0]} · ${v[2]}"></i>`;
+  }).join('');
+  $('#used').textContent=`Đã quy hoạch ${used}/256 địa chỉ (${(used/2.56).toFixed(1)}%) · Còn trống ${256-used} địa chỉ dự phòng`;
+  $('#rows').innerHTML=r.map((v,i)=>`<tr tabindex="0" data-i="${i}"><td><span class="dot" style="background:${COL[i%6]}"></span>VLAN ${v[0]}</td><td>${v[1]}</td><td><code class="copyable" title="Bấm để sao chép">${v[2]}</code></td><td><code class="copyable" title="Bấm để sao chép">${v[3]}</code></td><td><code>${v[4]}</code></td><td>${v[5]}</td></tr>`).join('');
+}
+$('#tabs').innerHTML=Object.keys(DB).map(k=>`<button class="chip" role="tab" data-k="${k}">${NM[k]||k}</button>`).join('');
+$('#tabs').onclick=e=>{const b=e.target.closest('.chip');if(b)show(b.dataset.k)};show('iclass');
+
+function pol(i){
+  const v=DB[window.curK][i];
+  document.querySelectorAll('#rows tr').forEach((t,j)=>t.style.background=j===i?'rgba(212,241,117,.12)':'');
+  $('#pol').innerHTML='<h3></h3><p class="lead" style="max-width:none;font-size:14px"></p>';
+  $('#pol h3').textContent='VLAN '+v[0]+' · '+v[6];
+  $('#pol p').textContent=v[7];
+}
+const _s=show;show=k=>{_s(k);window.curK=k;pol(0)};window.curK='iclass';pol(0);
+$('#bar').onclick=e=>{const seg=e.target.closest('i[data-i]');if(seg)pol(+seg.dataset.i)};
+$('#rows').addEventListener('click',e=>{
+  const codeEl=e.target.closest('code.copyable');
+  if(codeEl){copyText(codeEl.textContent,codeEl.textContent)}
+  const t=e.target.closest('tr');if(t)pol(+t.dataset.i);
+});
+$('#rows').addEventListener('keydown',e=>{
+  if(e.key==='Enter'||e.key===' '){const t=e.target.closest('tr');if(t){e.preventDefault();pol(+t.dataset.i)}}
+});
+
+/* ===== Team & Reveal ===== */
+$('#team').innerHTML=TM.map(m=>`<article class="card reveal"><div class="av">${m[0]}</div><h3>${m[1]}</h3><small>MSSV ${m[2]} · ${m[3]}</small><p>${m[4]}</p></article>`).join('');
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ===== Topology SVG ===== */
+(()=>{
+  const S=[
+    ['Trường THCS Hà Nội · Area 20','iclass',10,30,'10.20.',1,'R_THCS_HN','#f9c99a',1],
+    ['VP Hà Nội · ABR 0⇄20','hn_branch',310,30,'',0,'R_HN','#8ec3f0',1],
+    ['VP Huế · ABR 0⇄30','hue_branch',610,30,'',0,'R_HUE','#b8a9e6',1],
+    ['Trường THCS Huế · Area 30','iclass',910,30,'10.30.',1,'R_THCS_HUE','#f9c99a',1],
+    ['VP 125 Hòa Hưng · Area 0','hh',10,470,'',0,'R_HH · QoS DSCP','#9ff0f0',0],
+    ['HQ 60 Hai Bà Trưng · ABR 0⇄10','hq',310,470,'',0,'R_HQ · Dual WAN · VRRP','#8fb5a9',0],
+    ['Trường iCLASS 1 · Area 10','iclass',610,470,'10.10.',1,'R_iCLASS_1 · Dual WAN + 4G','#f9c99a',0],
+    ['Trường iDIGI 1 · Area 10','idigi',910,470,'10.10.',6,'R_iDIGI_1 · Dual WAN + 4G','#f9c99a',0]
+  ];
+  let g='<rect x="10" y="300" width="1180" height="50" rx="14" fill="#182538" stroke="#3b566e" /><text x="30" y="330" fill="#d8e9f2" font-size="14" font-weight="700">INTERNET / WAN (ISP — VNPT · Viettel · FPT)</text><circle cx="600" cy="325" r="13" fill="#5eead4"/><text x="622" y="330" fill="#d8e9f2" font-size="12">R_ISP</text>';
+  const tun=[
+    ['M440 458C395 385 395 295 440 232',355,392,'Area 0'],
+    ['M460 458C560 385 700 295 750 232',668,392,'Area 0'],
+    ['M438 470C330 420 260 420 162 470',282,428,'Area 0'],
+    ['M462 470C550 420 650 420 738 470',582,428,'Area 10'],
+    ['M462 470C600 395 950 395 1038 470',860,416,'Area 10'],
+    ['M438 220C330 265 260 265 162 220',282,268,'Area 20'],
+    ['M762 220C870 265 940 265 1038 220',882,268,'Area 30']
+  ];
+  let L='',B='';
+  S.forEach(([t,k,x,y,pf,n,r,col,top])=>{
+    const cx=x+140,cy=top?y+190:y,h=190;
+    L+=`<line x1="${cx}" y1="${cy}" x2="${cx}" y2="${top?300:350}" stroke="#7ea1b5" stroke-width="2"/>`;
+    let lines=DB[k].map(v=>{let c=v[2].replace('10.10.',pf||'10.10.').replace('X',n||'X');let s='V'+v[0]+' '+v[1]+' · '+c;return s.length>46?s.slice(0,45)+'…':s});
+    B+=`<g class="sbox" data-k="${k}" tabindex="0" role="button" aria-label="${t}"><rect x="${x}" y="${y}" width="280" height="${h}" rx="14" fill="${col}" fill-opacity=".93" stroke="#182634" stroke-width="1.5"/><text x="${cx}" y="${top?y+22:y+34}" text-anchor="middle" font-size="13" font-weight="700" fill="#10202a">${t}</text><text x="${cx}" y="${top?y+38:y+50}" text-anchor="middle" font-size="10.5" fill="#24404d">${r}</text>`+lines.map((s,j)=>`<text x="${x+12}" y="${y+(top?62:74)+j*17}" font-size="10.5" fill="#10202a">${s.replace(/&/g,'&amp;')}</text>`).join('')+'</g>';
+    B+=`<circle cx="${cx}" cy="${cy}" r="12" fill="#0d4f69" stroke="#fff" stroke-width="2"/>`;
+  });
+  g+=L+tun.map(t=>`<path d="${t[0]}" fill="none" stroke="#fb923c" stroke-width="2.4" stroke-dasharray="9 6"/><text x="${t[1]}" y="${t[2]}" font-size="11" font-weight="700" fill="#fdba74">${t[3]}</text>`).join('')+B;
+  g+='<g transform="translate(20,682)" font-size="11.5" fill="#8da3ae"><line x1="0" y1="0" x2="26" y2="0" stroke="#7ea1b5" stroke-width="2"/><text x="34" y="4">WAN vật lý</text><line x1="135" y1="0" x2="165" y2="0" stroke="#fb923c" stroke-width="2.4" stroke-dasharray="7 5"/><text x="173" y="4">Tunnel GRE-over-IPSec (OSPF)</text><circle cx="385" cy="0" r="6" fill="#0d4f69" stroke="#fff" stroke-width="1.5"/><text x="398" y="4">Router biên / ABR (Bấm khối bất kỳ để mở VLSM)</text></g>';
+  const sv=$('#topo-svg');sv.innerHTML=g;
+  const go=k=>{show(k);document.getElementById('vlsm').scrollIntoView({behavior:'smooth'})};
+  sv.querySelectorAll('.sbox').forEach(el=>{el.onclick=()=>go(el.dataset.k);el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go(el.dataset.k)}}});
+})();
+
+/* ===== Wi-Fi Roaming ===== */
+(()=>{
+  const AP=[16,50,84],NAME=['AP Phòng 1 · CH 1/36','AP Phòng 2 · CH 6/44','AP Phòng 3 · CH 11/149'];let cur=0,last=0;
+  const rs=(p,c)=>{const d=Math.abs(p-c);return Math.round(-45-d*.95-(d>17?8:0))};
+  function upd(){
+    const p=+$('#wp').value,on=$('#wk').checked,r=AP.map(c=>rs(p,c)),best=r.indexOf(Math.max(...r));
+    if(on?(r[cur]<-72||r[best]>r[cur]+8):r[cur]<-85)cur=best;
+    $('#wc').style.left=p+'%';
+    $('#wr').innerHTML=r.map((v,i)=>`<div class="ap ${i===cur?'on':''}"><span>${NAME[i]}</span><div class="ap-track"><i style="width:${Math.max(2,Math.min(100,(v+95)*2))}%"></i></div><span>${v} dBm</span></div>`).join('');
+    $('#wl').textContent=`Đang kết nối ${NAME[cur]} (${r[cur]} dBm)`+(r[cur]<-72?' — dưới ngưỡng −72 dBm: bị "bám" AP cũ (Sticky Client), tín hiệu yếu.':'.')+(cur!==last?' Vừa chuyển vùng sang AP mạnh nhất (giữ nguyên IP VLAN 30).':'');
+    last=cur;
+  }
+  $('#wp').oninput=upd;$('#wk').onchange=upd;upd();
+})();
+
+/* ===== Mô phỏng ACL ===== */
+const EX=JSON.parse($('#ex').textContent);
+const EV=(s,d)=>{
+  const o={className:'',textContent:''};
+  if(s==='tablet'){
+    if(d==='local_srv')o.textContent='[PERMIT] Tablet Học sinh iCLASS (VLAN 30 - 10.10.1.15) → Local iCLASS Server (VLAN 50 - 10.10.1.82:443) HỢP LỆ. Tải bài giảng tương tác qua LAN (~1 ms trong lab).';
+    else if(d==='wan_game'){o.className='denied';o.textContent='[KIDS-MODE-KIOSK · TC02] Không thể mở: Kids Mode khóa Kiosk chỉ hiển thị duy nhất biểu tượng iCLASS trên màn hình (ẩn hoàn toàn trình duyệt, YouTube, Facebook và Game; bấm thoát yêu cầu mã PIN IT). Chính sách lưu cục bộ nên vẫn duy trì khi mất WAN.';}
+    else{o.className='denied';o.textContent='[KIDS-MODE-ISOLATE · TC03] Tablet iCLASS (VLAN 30) bị Kids Mode khóa cứng trong app iCLASS nên không thể tự khởi tạo kết nối sang VLAN 20, VLAN 99 hay Trụ sở chính; chỉ giao tiếp HTTPS/WSS 443 với Local Server (VLAN 50).';}
+    return o;
+  }
+  if(d==='school_mgmt'){
+    if(s==='hh_it')o.textContent='[VPN-SSH-PERMIT · TC07] SSHv2 (cổng 22) từ IT Support 125 Hòa Hưng qua đường hầm GRE-over-IPSec Tunnel101 tới SW_iCLASS_1 (10.10.1.98) và R_iCLASS_1 (10.10.1.97) qua ACL 199 HỢP LỆ; máy giám sát VLAN 60 HQ truy vấn SNMP.';
+    else{o.className='denied';o.textContent='[POLICY-DENY] Truy cập VLAN Quản trị (VLAN 99) bị TỪ CHỐI. ACL 199 chỉ mở SSH cho dải IT Support (125 Hòa Hưng và IT khu vực phụ trách trường) và SNMP/Syslog từ máy giám sát HQ (VLAN 60).';}
+    return o;
+  }
+  if(s==='teacher'){
+    if(d==='local_srv')o.textContent='[PERMIT] Thiết bị Giáo viên (Tivi tương tác Ethernet / Laptop HDMI - VLAN 20) → Local Server (VLAN 50) HỢP LỆ để sinh mã Access Code.';
+    else if(d==='teacher_tv')o.textContent='[SESSION-ID-CONTROL · TC20] Giáo viên (VLAN 20) gửi lệnh Khóa/Mở màn hình đồng loạt qua WebSocket (WSS 443) tới ~50 tablet trong LAN (~1 ms).';
+    else if(d==='hq_cloud')o.textContent='[VPN-PERMIT] Thiết bị Giáo viên (VLAN 20) kết nối IPSec VPN về Kho học liệu 60 Hai Bà Trưng (172.16.1.130:443) để đồng bộ giáo án.';
+    else if(d==='hn_hue_school'){o.className='denied';o.textContent='[VPN-POLICY-DENY] Các trường không được kết nối ngang hàng trực tiếp sang trường ở khu vực khác; chỉ giao tiếp với Trụ sở / Văn phòng.';}
+    else o.textContent='[NAT-PERMIT] Gói tin HTTPS (Port 443) từ Giáo viên (VLAN 20) thoát Internet cục bộ qua NAT/PAT (Overload).';
+    return o;
+  }
+  if(s==='idigi_gv'){
+    if(d==='local_srv')o.textContent='[PERMIT] Phòng học iDIGI (VLAN 20) tải học liệu đồ họa trực tiếp từ NAS Cache nội bộ (VLAN 50) qua LAN Gigabit.';
+    else if(d==='hq_cloud')o.textContent='[VPN-PERMIT] Phòng học iDIGI (10.10.6.10) kết nối qua VPN về Master Server tại 60 Hai Bà Trưng (172.16.1.130).';
+    else if(d==='teacher_tv'||d==='hn_hue_school'){o.className='denied';o.textContent='[VPN-POLICY-DENY · TC06] Chặn kết nối ngang hàng trực tiếp giữa các trường THCS; chỉ cho phép giao tiếp Hub-and-Spoke về Trụ sở / Văn phòng.';}
+    else o.textContent='[NAT-PERMIT] Phòng học iDIGI (VLAN 20) thoát Internet cục bộ qua NAT/PAT trên Router trường.';
+    return o;
+  }
+  if(s==='hh_it'){
+    if(d==='local_srv'||d==='teacher_tv')o.textContent='[VPN-SUPPORT-PERMIT] IT Support 125 Hòa Hưng kết nối qua GRE-over-IPSec tới Trường THCS để hỗ trợ kỹ thuật và kiểm tra Local Cache (VLAN 50).';
+    else if(d==='hq_cloud')o.textContent='[WAN-VPN-PERMIT] VP 125 Hòa Hưng (172.16.2.70) → Cụm DMZ Trụ sở 60 Hai Bà Trưng (172.16.1.130) thông suốt qua Backbone Area 0.';
+    else if(d==='hn_hue_school')o.textContent='[VPN-SUPPORT-PERMIT] IT Support 125 Hòa Hưng hỗ trợ các trường Hà Nội / Huế qua IPSec VPN.';
+    else o.textContent='[NAT-PERMIT] Lưu lượng VP 125 Hòa Hưng ra Internet qua Firewall và NAT/PAT.';
+    return o;
+  }
+  if(s==='school_cache'){
+    if(d==='hq_cloud')o.textContent='[VPN-SYNC-PULL-PERMIT · TC09] Local Cache/NAS trường (VLAN 50) chủ động kéo (pull) bài giảng mới từ Content Master (172.16.1.130:443) qua IPSec VPN ngoài giờ học.';
+    else if(d==='local_srv')o.textContent='[LOCAL] Nguồn và đích cùng thuộc Local Server của trường (VLAN 50).';
+    else if(d==='wan_game'){o.className='denied';o.textContent='[POLICY-DENY] Local Cache/NAS (VLAN 50) bị chặn truy cập dịch vụ giải trí ngoài Internet.';}
+    else if(d==='teacher_tv'){o.className='denied';o.textContent='[STATEFUL-DENY] Local Server không tự khởi tạo kết nối vào máy Giáo viên; chỉ phản hồi phiên do VLAN 20 khởi tạo.';}
+    else{o.className='denied';o.textContent='[VPN-POLICY-DENY] Cache của trường không kết nối ngang hàng sang trường khác.';}
+    return o;
+  }
+  if(s==='hq_dmz'){
+    if(d==='local_srv'||d==='hn_hue_school'||d==='teacher_tv'){o.className='denied';o.textContent='[FIREWALL-DENY · TC10] Master Server trong DMZ (172.16.1.130) bị ACL 150 chặn khởi tạo kết nối ngược vào mạng trường; chỉ cho phép gói phản hồi của phiên Pull.';}
+    else if(d==='wan_game'){o.className='denied';o.textContent='[FIREWALL-DENY] Máy chủ vùng DMZ bị chặn chiều khởi tạo ra dịch vụ giải trí ngoài Internet.';}
+    else o.textContent='[DMZ-PERMIT] Phản hồi HTTPS/TLS 1.3 từ Cụm Máy chủ DMZ 60 Hai Bà Trưng qua Reverse Proxy/WAF.';
+    return o;
+  }
+  if(s==='hn_hue_vp'){
+    if(d==='hq_cloud')o.textContent='[IPSEC-VPN-PERMIT · TC15] Văn phòng Hà Nội / Huế kết nối qua đường hầm IPSec Site-to-Site VPN (AES-256) về Trụ sở 60 Hai Bà Trưng HỢP LỆ.';
+    else if(d==='hn_hue_school'||d==='local_srv')o.textContent='[REGIONAL-VPN-PERMIT · TC16] Văn phòng khu vực Hà Nội / Huế truy cập Server Cache các trường trong miền qua tuyến gộp 10.20.0.0/16 & 10.30.0.0/16.';
+    else if(d==='wan_game')o.textContent='[LOCAL-BREAKOUT-NAT · TC17] Lưu lượng Internet thông thường tại VP Hà Nội / Huế thoát cục bộ qua WAN ISP địa phương.';
+    else o.textContent='[VPN-COLLAB-PERMIT] Thoại VoIP và lưu lượng điều phối giữa Hà Nội / Huế và TP.HCM được ưu tiên QoS DSCP (EF/AF41).';
+  }
+  return o;
+};
+const LBL=a=>Object.fromEntries(a),SL=LBL(EX.src),DL=LBL(EX.dst);
+function run(){
+  const s=$('#ss').value,d=$('#sd').value,o=EV(s,d),den=/denied/.test(o.className),tag=(o.textContent.match(/^\[([^\]]+)\]/)||[])[1]||'';
+  $('#rs').textContent=SL[s].replace(/^Nguồn: /,'').split(' (')[0];
+  $('#rd').textContent=DL[d].replace(/^Đích: /,'').split(' (')[0];
+  $('#rg').textContent=(den?'✕ ':'✓ ')+tag;$('#rg').style.color=den?'#f87171':'#d4f175';
+  $('#so').textContent=o.textContent;$('#so').className='out'+(den?' den':'');
+  document.querySelectorAll('#tcs .chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===s&&b.dataset.d===d));
+}
+$('#ss').innerHTML=EX.src.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('');
+$('#sd').innerHTML=EX.dst.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('');
+$('#tcs').innerHTML=EX.tc.map(t=>`<button class="chip" data-s="${t[1]}" data-d="${t[2]}">${t[0]}</button>`).join('');
+$('#tcs').onclick=e=>{const b=e.target.closest('.chip');if(b){$('#ss').value=b.dataset.s;$('#sd').value=b.dataset.d;run()}};
+$('#ss').onchange=$('#sd').onchange=run;run();
+let mxOpen=false;
+$('#mx').onclick=()=>{
+  mxOpen=!mxOpen;
+  if(mxOpen && !$('#mt').innerHTML){
+    let h='<table><thead><tr><th>Nguồn \\ Đích</th>'+EX.dst.map(d=>`<th>${d[1].replace(/^Đích: /,'').split(' (')[0]}</th>`).join('')+'</tr></thead><tbody>';
+    EX.src.forEach(s=>{h+=`<tr><th>${s[1].replace(/^Nguồn: /,'').split(' (')[0]}</th>`+EX.dst.map(d=>{const o=EV(s[0],d[0]),den=/denied/.test(o.className);return `<td class="${den?'no':'ok'}" data-s="${s[0]}" data-d="${d[0]}" title="${(o.textContent.match(/^\[([^\]]+)\]/)||[])[1]}">${den?'DENY':'PERMIT'}</td>`}).join('')+'</tr>'});
+    $('#mt').innerHTML=h+'</tbody></table>';
+  }
+  $('#mt').hidden=!mxOpen;
+  $('#mx').textContent=mxOpen?'Ẩn ma trận 42 luồng':'Hiện ma trận 42 luồng';
+};
+$('#mt').onclick=e=>{const c=e.target.closest('td[data-s]');if(c){$('#ss').value=c.dataset.s;$('#sd').value=c.dataset.d;run();$('#so').scrollIntoView({behavior:'smooth',block:'center'})}};
+
+/* ===== Kids Mode (Single-App Kiosk) & 50 Tablet Grid ===== */
+(()=>{
+  const kt=$('#kt'),kn=$('#kn'),ovLock=$('#tb-lock-ov'),ovPin=$('#tb-pin-ov');
+  kt.innerHTML=Array.from({length:50},(_,i)=>`<i data-n="${i+1}" title="Tablet #${i+1} (10.10.1.${i+2})">${i+1}</i>`).join('');
+  const cells=[...kt.children];
+  let wan=true,selIdx=10;
+  const say=m=>kn.textContent=m;
+
+  function selectTab(idx){
+    selIdx=idx;
+    cells.forEach((c,i)=>c.classList.toggle('sel',i===idx));
+    $('#tb-id').textContent=`Tablet #${idx+1} · 10.10.1.${idx+2}`;
+  }
+  selectTab(10);
+
+  kt.onclick=e=>{
+    const cell=e.target.closest('i[data-n]');if(!cell)return;
+    selectTab(+cell.dataset.n-1);
+    say(`[GIÁM SÁT] Đang xem màn hình Tablet #${selIdx+1} (10.10.1.${selIdx+2}) — Kiosk Kids Mode chỉ hiển thị duy nhất app iCLASS.`);
+  };
+  function triggerExitAttempt(idx){
+    selectTab(idx);
+    const c=cells[idx];c.classList.add('bad');setTimeout(()=>c.classList.remove('bad'),1100);
+    ovPin.classList.add('show');
+    say(`[LỚP 1 · TC02] Tablet #${idx+1}: Học sinh bấm Home / Thoát Kids Mode → Khóa bằng mã PIN Quản trị IT. Màn hình chỉ có duy nhất app iCLASS nên không thể mở trình duyệt hay game ngoài luồng.`);
+  }
+  $('#kl').onclick=()=>{
+    const sid=($('#ksid').value||'ISMART7A').trim();
+    ovPin.classList.remove('show');ovLock.classList.add('show');
+    $('#tb-lock-msg').textContent=`Chú ý theo dõi Video bài giảng trên Tivi lớp học (Session ID: ${sid}).`;
+    $('#km-state-pill').textContent=`TRẠNG THÁI: ĐÃ KHÓA (${sid})`;
+    cells.forEach(c=>{c.classList.add('lock');c.textContent='🔒'});
+    say(`[LỚP 2 · TC20] Giáo viên khóa 50 màn hình theo Session ID ${sid} qua WSS 443 → Local Server (VLAN 50).`+(wan?'':'\nWAN đang mất: phiên khóa vẫn hoạt động bình thường vì chạy hoàn toàn trong LAN.'));
+  };
+  $('#ku').onclick=()=>{
+    ovLock.classList.remove('show');ovPin.classList.remove('show');
+    $('#km-state-pill').textContent='TRẠNG THÁI: ĐANG MỞ (iCLASS)';
+    cells.forEach((c,i)=>{c.classList.remove('lock');c.textContent=i+1});
+    say('[LỚP 2] Đã mở khóa đồng loạt; 50 tablet quay lại phần Luyện tập ngay trong ứng dụng iCLASS.');
+  };
+  $('#kg').onclick=()=>triggerExitAttempt(Math.floor(Math.random()*50));
+  $('#tb-exit-btn').onclick=()=>triggerExitAttempt(selIdx);
+  $('#tb-pin-close').onclick=()=>{ovPin.classList.remove('show');say(`[LỚP 1] Tablet #${selIdx+1} quay lại màn hình Kiosk chỉ hiện ứng dụng iCLASS.`)};
+  $('#tb-open-iclass').onclick=()=>{const sid=($('#ksid').value||'ISMART7A').trim();say(`[TC01 · LAN ~1 ms] Tablet #${selIdx+1} đang chạy iCLASS — phiên ${sid} kết nối Local Cache Server (10.10.1.82:443).`)};
+  $('#kw').onclick=e=>{
+    wan=!wan;e.currentTarget.setAttribute('aria-pressed',!wan);
+    $('#tb-net').textContent=wan?'LAN · VLAN 30':'LAN ONLY (OFFLINE WAN)';
+    say(wan?'WAN đã phục hồi — Local Cache tự đồng bộ ngược điểm số về Cụm 2 Server HA tại HQ.':'[ĐỨT CÁP WAN · TC11/TC21] Kids Mode lưu cục bộ nên vẫn khóa Kiosk chỉ hiện iCLASS; bài giảng & lệnh khóa chạy 100% từ Local Cache (VLAN 50).');
+  };
+  say('Màn hình tablet chỉ có duy nhất app iCLASS. Thử bấm "Khóa màn hình lớp", "HS bấm thoát Kids Mode" hoặc "Mất WAN".');
+})();
+
+/* ===== Wireshark TC13 ===== */
+(()=>{
+  const W={
+    http:{r:[[7,'10.10.1.15','postman-echo.com','TCP','52044 → 80 [SYN] (tcp.stream eq 10)'],[9,'10.10.1.15','postman-echo.com','HTTP','POST /post HTTP/1.1 (application/x-www-form-urlencoded)'],[10,'postman-echo.com','10.10.1.15','HTTP','HTTP/1.1 200 OK']],p:'⚠ LỘ DỮ LIỆU RÕ (tcp.port == 80 · Follow TCP Stream eq 10)\n\nusername=gv_ismart01&password=iSmart%402026&access_code=ISMART7A\n\nBất kỳ ai nghe lén trên đường truyền đều đọc nguyên văn tài khoản và mã lớp học.'},
+    tls:{r:[[7,'10.10.1.15','iclass.ismart.edu.vn','TCP','52044 → 443 [SYN] (tcp.stream eq 16)'],[9,'10.10.1.15','iclass.ismart.edu.vn','TLSv1.3','Client Hello (SNI=iclass.ismart.edu.vn · 1-RTT)'],[10,'iclass.ismart.edu.vn','10.10.1.15','TLSv1.3','Server Hello, Encrypted Extensions, Certificate'],[12,'10.10.1.15','iclass.ismart.edu.vn','TLSv1.3','Application Data (AEAD AES-256-GCM)'],[13,'iclass.ismart.edu.vn','10.10.1.15','TLSv1.3','Application Data (AEAD AES-256-GCM)']],p:null}
+  };
+  function hx(){let s='';for(let i=0;i<4;i++){s+=Array.from({length:16},()=>Math.floor(Math.random()*256).toString(16).padStart(2,'0')).join(' ')+'\n'}return s}
+  function ws(k){
+    document.querySelectorAll('[data-w]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.w===k));
+    $('#wsf').textContent=k==='http'?'Display Filter: http.request.method == "POST" && tcp.stream eq 10':'Display Filter: tls.handshake || tls.app_data (tcp.stream eq 16)';
+    $('#wsl').innerHTML=W[k].r.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('');
+    $('#wsp').textContent=W[k].p||('🔒 Dữ liệu đã mã hóa đầu cuối (TLS 1.3, cổng 443) — chỉ thấy byte ngẫu nhiên:\n\n'+hx());
+    $('#wsp').className='out'+(k==='http'?' den':'');
+  }
+  document.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>ws(b.dataset.w));ws('http');
+})();
+
+/* ===== CAPEX / ROI / Green PoE ===== */
+(()=>{
+  const B=[
+    ['Router biên & VPN / QoS','MikroTik RB5009UG+S+IN',6280000,1,1,'vohoang.vn: 6,28 tr (niêm yết 6,49 tr) · rẻ hơn FortiGate 60F (~15,07 tr VAT tại maychuhanoi.vn)'],
+    ['Switch L3/L2+ PoE+','iCLASS: MikroTik CRS328-24P-4S+RM (16,14 tr) · iDIGI: Ruijie RG-NBS3100-16GT2SFP-P (3,80 tr)',[16140000,3800000],1,1,'wifi.com.vn: CRS328 niêm yết 16,14 tr · alphatek.com.vn: NBS3100 ~3,80 tr'],
+    ['Access Point gắn trần','Grandstream GWN7660 (Wi-Fi 6, 802.11k/v/r)',3730000,3,2,'wifi.com.vn: 3,39 tr chưa VAT (~3,73 tr gồm 10% VAT; niêm yết 4,40 tr)'],
+    ['Local Cache / RADIUS Server','Dell OptiPlex 7080 Micro (i5-10500T, 16GB DDR4, 1TB NVMe + 2TB HDD)',15130000,1,1,'Thân máy ~5,50 tr (xeon.vn) + RAM 16GB 2,75 tr (tinhocngoisao) + NVMe 1TB 4,29 tr + HDD 2TB 2,59 tr (phongvu.vn)'],
+    ['Bộ lưu điện sóng sin chuẩn','APC Smart-UPS 1000VA LCD (SMT1000I)',9290000,1,1,'phucanh.vn: 9,29 tr (niêm yết 11,055 tr) · rẻ hơn SMT1500I (13,30 tr tại phucanh.vn)'],
+    ['Tủ rack & vật tư','Tủ rack 9U D450, patch panel 24P, PDU, ~150m cáp Cat6 AMP',5700000,1,1,'Tủ 9U 1,76 tr (turacksaigon) + Patch Panel 0,95 tr + PDU 0,48 tr (phuonglinhit) + Cat6 2,51 tr (vitinhlehuy)']
+  ];
+  const m=v=>new Intl.NumberFormat('vi-VN').format(Math.round(v))+' đ',mt=v=>(v/1e6).toFixed(2).replace('.',',')+' tr';
+  let tI=0,tD=0;B.forEach(r=>{const p=Array.isArray(r[2])?r[2]:[r[2],r[2]];tI+=p[0]*r[3];tD+=p[1]*r[4]});
+  $('#bom').innerHTML=B.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${Array.isArray(r[2])?r[2].map(mt).join(' / '):mt(r[2])}</td><td>${r[3]} / ${r[4]}</td><td>${r[5]}</td></tr>`).join('')+`<tr><td colspan="2"><b>Tổng CAPEX mỗi trường</b></td><td colspan="3"><b>iCLASS ${mt(tI)} · iDIGI ${mt(tD)}</b> (tham chiếu cấu hình gốc: ~84,73 tr / ~73,00 tr · OPEX 1,20 tr/tháng · Cụm 2 Server HA ~307,90 tr tại HQ)</td></tr>`;
+  function upd(){
+    const a=+$('#ni').value,b=+$('#nd').value,hs=+$('#hs').value||0,hv=+$('#hv').value||0;$('#niv').textContent=a;$('#ndv').textContent=b;
+    const cap=a*tI+b*tD,old=a*84730000+b*73000000,ben=(a+b)*hs*hv*12;
+    $('#cx').textContent=m(cap);
+    $('#cs').textContent=`Cấu hình gốc: ${m(old)} → tiết kiệm ${m(old-cap)} (${old?((old-cap)/old*100).toFixed(1):0}%).`;
+    $('#ro').textContent=cap?((ben*3-cap)/cap*100>=0?'+':'')+Math.round((ben*3-cap)/cap*100)+'% ROI 3 năm':'—';
+    $('#pb').textContent=ben>0&&cap?`Hoàn vốn sau khoảng ${(cap/(ben/12)).toFixed(1)} tháng (giả định minh họa, chưa gồm OPEX).`:'Nhập giả định lợi ích để tính hoàn vốn.';
+    const ga=+$('#ga').value||0,gw=+$('#gw').value||0,gs=+$('#gs').value||0,gh=Math.min(24,+$('#gh').value||0),off=6*gh+24,ap=ga*gw,tot=(gs+ap)*168,sv=ap*off;
+    const apPct=ap?((off/168)*100).toFixed(1):'0.0';
+    $('#gr').textContent=tot?`${(sv/tot*100).toFixed(1)}% tổng · ${apPct}% AP`:'—';
+    $('#gr-sub').textContent=`Tắt PoE ${off}/168 giờ/tuần (~${(sv/1000*52).toFixed(0)} kWh/năm/trường): riêng cụm AP tiết kiệm ${apPct}%; tính trên tổng tải tủ mạng (gồm Switch chạy 24/7) tiết kiệm ${tot?(sv/tot*100).toFixed(1):'0.0'}%.`;
+  }
+  document.querySelectorAll('#chiphi input').forEach(i=>i.oninput=upd);upd();
+})();
+
+/* ===== Scroll Progress Bar & Active Nav Scrollspy ===== */
+(()=>{
+  const sbar=$('#sbar'),links=[...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const targets=links.map(a=>({a,el:document.querySelector(a.getAttribute('href'))})).filter(x=>x.el);
+  function onScroll(){
+    const h=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+    sbar.style.width=(Math.min(1,scrollY/h)*100).toFixed(2)+'%';
+    let active=targets[0];
+    for(const item of targets){if(item.el.getBoundingClientRect().top<=140)active=item}
+    if(scrollY+innerHeight>=document.documentElement.scrollHeight-40)active=targets[targets.length-1];
+    links.forEach(a=>a.classList.toggle('active',active&&a===active.a));
+  }
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+
+/* ============================================================================
+   THREE.JS: QUẢ CẦU MẠNG INDEX (1) + 3 VÒNG QUỸ ĐẠO VÌ SAO GIỐNG INDEX (2)
+   + HAI ĐIỂM ĐẢO HOÀNG SA & TRƯỜNG SA (DỊU MẮT, KHÔNG CHÓI)
+   ============================================================================ */
+(()=>{
+  const cv=$('#gl');
+  if(typeof THREE==='undefined'){cv.style.display='none';return}
+  let rd;
+  try{rd=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'})}
+  catch(e){cv.style.display='none';return}
+
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const R=4.8,D=Math.PI/180;
+  rd.setPixelRatio(Math.min(devicePixelRatio,2));
+
+  const sc=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(40,1,.1,300);
+  const grp=new THREE.Group();
+  sc.add(grp);
+
+  const P=(la,lo,r=R)=>new THREE.Vector3(r*Math.cos(la*D)*Math.sin(lo*D),r*Math.sin(la*D),r*Math.cos(la*D)*Math.cos(lo*D));
+
+  /* Texture chấm tròn & hào quang mượt từ index (2) */
+  const makeCircleTex=(inner,mid,outer)=>{
+    const c=document.createElement('canvas');c.width=c.height=64;
+    const x=c.getContext('2d'),g=x.createRadialGradient(32,32,0,32,32,32);
+    g.addColorStop(0,inner);g.addColorStop(.38,mid);g.addColorStop(1,outer);
+    x.fillStyle=g;x.fillRect(0,0,64,64);
+    return new THREE.CanvasTexture(c);
+  };
+  const dotTex=makeCircleTex('rgba(255,255,255,1)','rgba(255,255,255,0.65)','rgba(255,255,255,0)');
+  const glowTex=makeCircleTex('rgba(255,255,255,0.9)','rgba(255,255,255,0.22)','rgba(255,255,255,0)');
+
+  const makePts=(arr,col,size,op=.88)=>{
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.Float32BufferAttribute(arr,3));
+    return new THREE.Points(g,new THREE.PointsMaterial({
+      color:col,size,map:dotTex,alphaTest:.03,transparent:true,opacity:op,depthWrite:false
+    }));
+  };
+
+  /* 1. Quả cầu nền tối + lưới kinh vĩ tuyến xanh ngọc dịu giống index (1) */
+  grp.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R,64,48),
+    new THREE.MeshBasicMaterial({color:0x07131c})
+  ));
+  grp.add(new THREE.LineSegments(
+    new THREE.WireframeGeometry(new THREE.SphereGeometry(R*1.001,40,28)),
+    new THREE.LineBasicMaterial({color:0x2dd4bf,transparent:true,opacity:.15})
+  ));
+  grp.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R*1.05,48,32),
+    new THREE.MeshBasicMaterial({color:0x2dd4bf,transparent:true,opacity:.065,side:THREE.BackSide})
+  ));
+
+  /* 2. Ba vòng quỹ đạo nghiêng + vì sao/vệ tinh chạy quanh địa cầu GIỐNG HỆT INDEX (2) */
+  const orbitRings=[];
+  [
+    {r:R*1.16,rx:.55,rz:.28,col:0x38e8cf,op:.20,spd:.0018},
+    {r:R*1.25,rx:1.12,rz:-.42,col:0xa78bfa,op:.17,spd:-.0013},
+    {r:R*1.34,rx:.24,rz:-.92,col:0xd4f175,op:.14,spd:.0010}
+  ].forEach(cfg=>{
+    const rg=new THREE.Group();
+    rg.add(new THREE.Mesh(
+      new THREE.TorusGeometry(cfg.r,.009,12,128),
+      new THREE.MeshBasicMaterial({color:cfg.col,transparent:true,opacity:cfg.op})
+    ));
+    /* Hai vì sao đối xứng chạy trên mỗi vòng quỹ đạo (nhẹ nhàng, cân đối) */
+    [0,Math.PI].forEach((ang,idx)=>{
+      const sat=new THREE.Mesh(
+        new THREE.OctahedronGeometry(idx===0?.062:.042,0),
+        new THREE.MeshBasicMaterial({color:cfg.col})
+      );
+      sat.position.set(Math.cos(ang)*cfg.r,Math.sin(ang)*cfg.r,0);
+      const satGlow=new THREE.Sprite(new THREE.SpriteMaterial({
+        map:glowTex,color:cfg.col,transparent:true,opacity:idx===0?.85:.55,depthWrite:false
+      }));
+      const scSz=idx===0?.38:.24;
+      satGlow.scale.set(scSz,scSz,1);
+      sat.add(satGlow);
+      rg.add(sat);
+    });
+    rg.rotation.set(cfg.rx,0,cfg.rz);
+    grp.add(rg);
+    orbitRings.push({rg,spd:cfg.spd});
+  });
+
+  /* 3. Nền 600 vì sao tròn mịn kiểu index (2) xoay chậm quanh không gian */
+  const stars=[];
+  for(let i=0;i<600;i++){
+    const t=Math.random()*6.283,u=Math.random()*2-1,r=48+Math.random()*38,s=Math.sqrt(1-u*u);
+    stars.push(r*s*Math.cos(t),r*u,r*s*Math.sin(t));
+  }
+  const starField=makePts(stars,0xcfefff,.42,.62);
+  sc.add(starField);
+
+  /* 4. Bản đồ chấm tròn Việt Nam màu xanh chanh (#d4f175) giống index (1) */
+  const poly=[[102.1,22.4],[103,22.7],[104,22.8],[105.3,23.3],[106.7,22.9],[108,21.5],[107.1,20.8],[106.7,20.3],[106.2,19.9],[105.8,19.4],[105.7,18.8],[106,18.2],[106.5,17.7],[107.1,16.9],[108.2,16.1],[108.9,15.3],[109.2,14.4],[109.3,13.4],[109.2,12.3],[109,11.6],[108.3,10.9],[107.2,10.4],[106.5,9.6],[105.6,8.7],[104.8,8.6],[104.9,9.7],[105,10.4],[105,10.9],[106,11.7],[107.5,12.3],[107.6,14],[107.2,15.2],[106.6,16.4],[105.8,17.6],[105.1,18.6],[104.1,19.2],[104.4,20.3],[103.5,20.7],[102.6,21.8]];
+  const inside=(x,y)=>{let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const[a,b]=poly[i],[d,e]=poly[j];if((b>y)!=(e>y)&&x<(d-a)*(y-b)/(e-b)+a)c=!c}return c};
+  const vn=[];
+  for(let la=8.4;la<23.6;la+=.26)for(let lo=102;lo<109.8;lo+=.26)if(inside(lo,la)){const v=P(la,lo,R*1.004);vn.push(v.x,v.y,v.z)}
+  grp.add(makePts(vn,0xd4f175,.055,.88));
+
+  /* 5. Hai điểm quần đảo Hoàng Sa & Trường Sa */
+  const ISLANDS=[
+    {name:'Hoàng Sa',la:16.50,lo:112.00,c:0x5eead4,hex:'#5eead4',islets:[[16.65,112.30],[16.38,111.72],[16.82,112.18],[16.25,112.45]]},
+    {name:'Trường Sa',la:10.20,lo:114.20,c:0x5eead4,hex:'#5eead4',islets:[[10.75,114.65],[9.65,113.85],[10.45,113.55],[9.85,114.85],[11.15,114.25]]}
+  ];
+  const islandTags=[];
+  ISLANDS.forEach(isl=>{
+    const p=P(isl.la,isl.lo,R*1.006);
+    const m=new THREE.Mesh(new THREE.SphereGeometry(.052,14,12),new THREE.MeshBasicMaterial({color:isl.c}));
+    m.position.copy(p);
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:isl.c,transparent:true,opacity:.55,depthWrite:false}));
+    sp.scale.set(.32,.32,1);m.add(sp);
+    grp.add(m);
+    const arr=[];isl.islets.forEach(([la,lo])=>{const v=P(la,lo,R*1.005);arr.push(v.x,v.y,v.z)});
+    grp.add(makePts(arr,isl.c,.052,.78));
+    const el=document.createElement('span');el.className='tag island';
+    el.innerHTML=`<i style="background:${isl.hex}"></i>${isl.name}`;
+    $('#tags').appendChild(el);
+    islandTags.push({m,t:el});
+  });
+
+  /* 6. Ba nút khu vực TP.HCM · Hà Nội · Huế & đường hầm GRE-over-IPSec nét đứt */
+  const N=[
+    {k:'hcm',n:'TP.HCM · HQ & HH',la:10.78,lo:106.69,c:0xd4f175,hex:'#d4f175',i:'Area 10 · 10.10.0.0/16 · ABR tại R_HQ. Trụ sở 60 Hai Bà Trưng, VP 125 Hòa Hưng và cụm trường.',sc:9},
+    {k:'hn',n:'Hà Nội',la:21.03,lo:105.85,c:0x5eead4,hex:'#5eead4',i:'Area 20 · 10.20.0.0/16 · ABR tại R_HN. Văn phòng và cụm trường khu vực Bắc.',sc:4},
+    {k:'hue',n:'Huế',la:16.46,lo:107.59,c:0xa78bfa,hex:'#a78bfa',i:'Area 30 · 10.30.0.0/16 · ABR tại R_HUE. Văn phòng và cụm trường khu vực Trung.',sc:4}
+  ];
+
+  const wanArcs=[],pk=[];
+  function arc(A,B,h,col,np,isWan){
+    const M=A.clone().add(B).multiplyScalar(.5).setLength(R+h);
+    const c=new THREE.QuadraticBezierCurve3(A,M,B);
+    const mat=new THREE.LineDashedMaterial({color:col,dashSize:.09,gapSize:.06,transparent:true,opacity:isWan?.82:.55});
+    const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(c.getPoints(64)),mat);
+    l.computeLineDistances();
+    grp.add(l);
+    if(isWan)wanArcs.push({mat,baseCol:col});
+    for(let i=0;i<np;i++){
+      const s=new THREE.Mesh(new THREE.SphereGeometry(isWan?.03:.02,8,8),new THREE.MeshBasicMaterial({color:col}));
+      grp.add(s);
+      pk.push({c,s,t:i/np,v:.0018+Math.random()*.001,isWan});
+    }
+  }
+
+  N.forEach(n=>{
+    n.p=P(n.la,n.lo,R*1.006);
+    n.m=new THREE.Mesh(new THREE.SphereGeometry(.068,16,12),new THREE.MeshBasicMaterial({color:n.c}));
+    n.m.position.copy(n.p);
+    n.s=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,color:n.c,transparent:true,opacity:.78,depthWrite:false}));
+    n.s.scale.set(.52,.52,1);n.m.add(n.s);
+    grp.add(n.m);
+
+    n.t=document.createElement('span');n.t.className='tag';
+    n.t.innerHTML=`<i style="background:${n.hex}"></i>${n.n}`;
+    $('#tags').appendChild(n.t);
+
+    const sp=[];
+    for(let i=0;i<n.sc;i++){
+      const ang=(i/n.sc)*Math.PI*2+.4;
+      const rad=.35+(i%2)*.25;
+      const v=P(n.la+Math.sin(ang)*rad*.8,n.lo+Math.cos(ang)*rad,R*1.005);
+      sp.push(v.x,v.y,v.z);
+      if(i<3)arc(n.p,v,.12,n.c,1,false);
+    }
+    grp.add(makePts(sp,n.c,.08,.85));
+  });
+  arc(N[0].p,N[1].p,.56,0xd4f175,3,true);
+  arc(N[0].p,N[2].p,.40,0xa78bfa,3,true);
+  arc(N[1].p,N[2].p,.32,0x5eead4,2,true);
+
+  /* 7. Điều khiển camera: khi bấm Toàn cảnh / TP.HCM / Huế / Hà Nội,
+        tự động di chuyển & xoay mục tiêu về góc trái-trước quả địa cầu (không bao giờ bị cắt mép phải) */
+  const V={la:15.4,lo:108.5,bias:10,z:R+6.4,gx:.34};
+  const VIEW={
+    all:V,
+    hcm:{la:10.78,lo:106.69,bias:16,z:R+4.8,gx:.35},
+    hue:{la:16.46,lo:107.59,bias:16,z:R+4.8,gx:.35},
+    hn: {la:21.03,lo:105.85,bias:16,z:R+4.8,gx:.35}
+  };
+  let tg={ry:-(V.lo+V.bias)*D,rx:V.la*D,z:V.z,gx:V.gx};
+  let cur={...tg},mx=0,my=0,narrow=false,wanCut=false;
+  let drag=false,dragX=0,dragY=0,offY=0,offX=0,curFocus='all';
+  const info=$('#info');
+
+  function updateInfo(k){
+    const n=N.find(x=>x.k===k);
+    if(wanCut){
+      info.textContent='⚡ Đứt cáp WAN (TC11/TC21): Các trường tại TP.HCM, Huế & Hà Nội chạy 100% cục bộ qua Local Cache (VLAN 50) & Kids Mode.';
+      return;
+    }
+    if(n)info.textContent=n.n+' — '+n.i;
+    else info.textContent='Trục mạng GRE-over-IPSec & OSPF Multi-Area nối TP.HCM (Area 10), Huế (Area 30), Hà Nội (Area 20) cùng Hoàng Sa & Trường Sa.';
+  }
+  function focus(k){
+    curFocus=k;offX=0;offY=0;
+    const v=VIEW[k]||V;
+    tg={ry:-(v.lo+v.bias)*D,rx:v.la*D,z:v.z,gx:v.gx};
+    N.forEach(n=>n.t.classList.toggle('active',n.k===k));
+    updateInfo(k);
+  }
+  $('#globe-ctrl').onclick=e=>{
+    const b=e.target.closest('.chip');if(!b)return;
+    if(b.id==='wan-sim'){
+      wanCut=!wanCut;
+      b.setAttribute('aria-pressed',wanCut);
+      b.textContent=wanCut?'✓ Khôi phục WAN':'⚡ Thử đứt cáp WAN';
+      wanArcs.forEach(a=>{a.mat.color.setHex(wanCut?0xf87171:a.baseCol);a.mat.opacity=wanCut?.32:.82});
+      pk.forEach(o=>{if(o.isWan)o.s.visible=!wanCut});
+      updateInfo(curFocus);
+      return;
+    }
+    document.querySelectorAll('#globe-ctrl .chip[data-k]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    focus(b.dataset.k);
+  };
+  focus('all');
+
+  addEventListener('pointermove',e=>{
+    mx=e.clientX/innerWidth*2-1;my=e.clientY/innerHeight*2-1;
+    if(drag){offY+=(e.clientX-dragX)*.005;offX=Math.max(-.6,Math.min(.6,offX+(e.clientY-dragY)*.005));dragX=e.clientX;dragY=e.clientY}
+  });
+  addEventListener('pointerdown',e=>{if((e.target===cv||e.target.closest('.hero'))&&!e.target.closest('button,a')){drag=true;dragX=e.clientX;dragY=e.clientY}});
+  addEventListener('pointerup',()=>{drag=false});
+
+  function fit(){
+    const w=innerWidth,h=innerHeight;
+    rd.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();narrow=w<920;
+  }
+  addEventListener('resize',fit);fit();
+
+  const clock=new THREE.Clock(),tmp=new THREE.Vector3(),tmp2=new THREE.Vector3();
+  const fovTan=Math.tan((cam.fov*D)/2);
+  const allTagged=[
+    ...N.map(n=>({...n,side:'left'})),
+    ...islandTags.map(i=>({...i,side:'right'}))
+  ];
+  function tick(){
+    const t=clock.getElapsedTime();
+    const p=Math.min(1,scrollY/Math.max(1,document.body.scrollHeight-innerHeight));
+    cur.ry+=(tg.ry+offY-cur.ry)*.07;
+    cur.rx+=(tg.rx+offX-cur.rx)*.07;
+    cur.z+=(tg.z-cur.z)*.07;
+    cur.gx+=(tg.gx-cur.gx)*.07;
+
+    /* Tính vị trí X quả cầu theo tỷ lệ khung hình để luôn nằm trọn bên phải màn hình,
+       còn vùng Việt Nam / thành phố đang chọn nằm gọn ở góc trái-trước quả địa cầu */
+    const halfW=cur.z*fovTan*cam.aspect;
+    const bx=narrow?0:cur.gx*halfW*Math.cos(p*Math.PI*2.2);
+
+    grp.rotation.set(cur.rx+my*.04,cur.ry+mx*.06+(reduce?0:Math.sin(t*.25)*.028),0);
+    grp.position.x+=(bx-grp.position.x)*.07;
+    cam.position.set(0,0,cur.z+(narrow?2.6:0));
+
+    const heroFade=Math.max(0,1-scrollY/(innerHeight*.65));
+    cv.style.opacity=(0.28+0.72*heroFade).toFixed(2);
+
+    N.forEach((n,i)=>{
+      const isSel=n.k===curFocus;
+      const base=isSel?.72:.48;
+      const s=base+.12*Math.sin(t*2.4+i);
+      n.s.scale.set(s,s,1);
+    });
+    if(!reduce){
+      orbitRings.forEach(o=>o.rg.rotation.z+=o.spd);
+      starField.rotation.y=t*.01;
+      pk.forEach(o=>{if(!o.s.visible)return;o.t=(o.t+o.v)%1;o.s.position.copy(o.c.getPoint(o.t))});
+    }
+
+    grp.updateMatrixWorld();
+    allTagged.forEach(item=>{
+      item.m.getWorldPosition(tmp);
+      tmp2.copy(tmp).sub(grp.position).normalize();
+      const f=tmp2.dot(cam.position.clone().sub(tmp).normalize())>.12;
+      const q=tmp.clone().project(cam);
+      const px=(q.x*.5+.5)*innerWidth;
+      const py=(-q.y*.5+.5)*innerHeight;
+      item.t.style.opacity=f?heroFade:0;
+      if(item.side==='left'){
+        item.t.style.transform=`translate(${px-12}px,${py}px) translate(-100%,-50%)`;
+      }else{
+        item.t.style.transform=`translate(${px+10}px,${py}px) translate(0,-50%)`;
+      }
+    });
+
+    rd.render(sc,cam);
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+</script>
+</body>
+</html>
